@@ -1,0 +1,35 @@
+{
+  "name": "rm_atmo",
+  "version": "1.0.0",
+  "description": "background atmosphere interaction",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify src/rm_atmo.js -o dist/rm_atmo.js | browserify src/rm_atmo.js | uglifyjs > dist/rm_atmo.min.js ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renmuell/rm_atmo.git"
+  },
+  "files": [
+    "dist/rm_atmo.js",
+    "dist/rm_atmo.min.js",
+    "LICENSE"
+  ],
+  "keywords": [
+    "background",
+    "atmosphere",
+    "interaction"
+  ],
+  "author": "renmuell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/renmuell/rm_atmo/issues"
+  },
+  "homepage": "https://github.com/renmuell/rm_atmo#readme",
+  "dependencies": {
+    "cengine": "^0.1.6",
+    "requirejs": "^2.3.5",
+    "scale-maker": "^0.2.2"
+  }
+}
