@@ -4,6 +4,8 @@
 
 This is an js-canvas driven atmospheric visualization with interaction.
 
+![rm_atmo teaser](https://renmuell.github.io/assets/img/rm_atmo.gif)
+
 ## Demo page
 
 [https://renmuell.github.io/rm_atmo/](https://renmuell.github.io/rm_atmo/)
