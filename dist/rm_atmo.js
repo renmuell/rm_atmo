@@ -17,22 +17,46 @@
 },{}],5:[function(require,module,exports){
 module.exports=function(){'use strict';function getNthRoot(value,n){return Math.pow(value,1/n)}function isValidNoteName(noteName){var validNameRegex=/^[A-G][b#]?[0-8]$/;return'string'==typeof noteName&&validNameRegex.test(noteName)}function isScaleTypeDefined(scaleName){return scaleDefs.hasOwnProperty(scaleName)}function isValidScaleName(scaleName){var scaleNameRegex=/^[A-Za-z\-\_ ]+$/;return'string'==typeof scaleName&&scaleNameRegex.test(scaleName)}function isValidScaleDefinition(scaleDef){return Array.isArray(scaleDef)&&scaleDef.every(isPositiveIntegerGreaterThanZero)}function isPositiveIntegerGreaterThanZero(value){return'number'==typeof value&&value%1===0&&value>0}function getNoteByInterval(reference,interval){var frequency=reference*Math.pow(TWELFTH_ROOT,interval);return frequency=frequency>MAX_FREQUENCY?MAX_FREQUENCY:frequency,frequency=MIN_FREQUENCY>frequency?MIN_FREQUENCY:frequency,Math.round(100*frequency)/100}function getCentsByInterval(interval){return interval*CENTS_PER_SEMITONE}function getIntervalFromA4(noteName,octave){var semitonesInOctave=12,A4Octave=4,intervalsRelativeToA={C:-9,D:-7,E:-5,F:-4,G:-2,A:0,B:2};return intervalsRelativeToA[noteName]+(octave-A4Octave)*semitonesInOctave}function getIntervalAdjustment(sharpOrFlat){var adjustments={'#':1,b:-1};return'#'!==sharpOrFlat&&'b'!==sharpOrFlat?0:adjustments[sharpOrFlat]}function getScaleNames(){var scaleName,scaleNames=[];for(scaleName in scaleDefs)scaleDefs.hasOwnProperty(scaleName)&&scaleNames.push(scaleName);return scaleNames}function getNote(noteString){if(!isValidNoteName(noteString))throw new Error('Invalid argument noteString: getNote(noteString) noteString should be a valid note name, eg. "Ab0", "C7"');var intervalFromA,adjustedInterval,noteNameMatch=noteString.match(/^[A-G]/g),sharpOrFlatMatch=noteString.match(/[b#]/g),octaveMatch=noteString.match(/[0-8]/g),noteName=noteNameMatch?noteNameMatch[0]:null,sharpOrFlat=sharpOrFlatMatch?sharpOrFlatMatch[0]:null,octave=octaveMatch?parseInt(octaveMatch[0],10):null;return intervalFromA=getIntervalFromA4(noteName,octave),adjustedInterval=intervalFromA+getIntervalAdjustment(sharpOrFlat),getNoteByInterval(REF_FREQUENCIES.A4,adjustedInterval)}function makeScale(scaleType,startNote,noteCount){if(arguments.length<3)throw new Error('Missing argument(s): makeScale() expects three arguments');if(!isValidScaleName(scaleType))throw new Error('Invalid argument scaleType: makeScale(scaleType, startNote, noteCount) expects scaleType to be a string consisting of lower or upper case letters (A-Z, a-z), spaces, hyphens(-) or underscores(_) only');if(!isScaleTypeDefined(scaleType))throw new Error('Scale type is undefined: makeScale(scaleType, startNote, noteCount) scale with name provided for scaleType is not defined – make sure you choose from available scale types');if(!isPositiveIntegerGreaterThanZero(noteCount))throw new Error('Invalid argument noteCount: makeScale(scaleType, startNote, noteCount) expects noteCount to be a positive integer greater than 0');if(!isValidNoteName(startNote))throw new Error('Invalid argument startNote: makeScale(scaleType, startNote, noteCount) startNote should be a valid note name, eg. "Ab0", "C7"');var i,scaleDef=scaleDefs[scaleType],scaleInHertz=[],scaleInCents=[],scaleInSemitones=[],intervalsFromStartNote=0,intervalCounter=0,startFrequency=getNote(startNote);for(scaleInHertz.push(startFrequency),scaleInCents.push(0),scaleInSemitones.push(0),i=0;noteCount-1>i;i+=1)intervalsFromStartNote+=scaleDef[intervalCounter],scaleInHertz.push(getNoteByInterval(startFrequency,intervalsFromStartNote)),scaleInCents.push(getCentsByInterval(intervalsFromStartNote)),scaleInSemitones.push(intervalsFromStartNote),intervalCounter=intervalCounter===scaleDef.length-1?0:intervalCounter+1;return{startNote:startFrequency,inHertz:scaleInHertz,inCents:scaleInCents,inSemiTones:scaleInSemitones}}function addScale(name,scaleDef){if(arguments.length<2)throw new Error('Missing argument(s): addScale() expects two arguments');if(!isValidScaleName(name))throw new Error('Invalid argument name: addScale(name, scaleDef) expects name to be a string consisting of lower or upper case letters (A-Z, a-z), spaces, hyphens(-) or underscores(_) only');if(isScaleTypeDefined(name))throw new Error('Scale type already defined: addScale(name, scaleDef) scale with value of name argument is already defined – make sure you choose a scale name not already in use');if(!isValidScaleDefinition(scaleDef))throw new Error('Invalid argument scaleDef: addScale(name, scaleDef) expects scaleDef to be an array of only positive integers greater than 0');scaleDefs[name]=scaleDef}var TWELFTH_ROOT=getNthRoot(2,12),REF_FREQUENCIES={A4:440,C0:16.35,B8:7902.13},MIN_FREQUENCY=REF_FREQUENCIES.C0,MAX_FREQUENCY=REF_FREQUENCIES.B8,CENTS_PER_SEMITONE=100,scaleDefs={};return scaleDefs.chromatic=[1],scaleDefs.wholeTone=[2],scaleDefs.major=[2,2,1,2,2,2,1],scaleDefs.majorPentatonic=[2,2,3,2,3],scaleDefs.minorPentatonic=[3,2,2,3,2],scaleDefs.kuomiPentatonic=[1,4,2,1,4],scaleDefs.chinesePentatonic=[4,2,1,4,1],scaleDefs.naturalMinor=[2,1,2,2,1,2,2],scaleDefs.harmonicMinor=[2,1,2,2,1,3,1],scaleDefs.melodicMinor=[2,1,2,2,2,2,1],{makeScale:makeScale,getNote:getNote,addScale:addScale,getScaleNames:getScaleNames,test:{getIntervalFromA4:getIntervalFromA4,getIntervalAdjustment:getIntervalAdjustment,getCentsByInterval:getCentsByInterval,getNoteByInterval:getNoteByInterval,isValidNoteName:isValidNoteName,isValidScaleName:isValidScaleName,isValidScaleDefinition:isValidScaleDefinition,isPositiveIntegerGreaterThanZero:isPositiveIntegerGreaterThanZero,isScaleTypeDefined:isScaleTypeDefined}}}();
 },{}],6:[function(require,module,exports){
+/******************************************************************************
+ * backgroundSong.js
+ *
+ * With this module a background song can be looped.
+ *
+ * @author Rene Müller <rene.mueller.code@gmail.com>
+ *****************************************************************************/
+
+/**
+ *  @param {string} url - song URL
+ */
 const BackgroundSong = function (url) {
 
+  /* new instance */
+
   const backgroundSong = {
+
+    /**
+     *  background song
+     *  @type {Audio}
+     */
     song: new Audio(url),
+
+    /**
+     *  Attach and start the song
+     *  
+     *  @public  
+     */
     init: () => {
 
       backgroundSong.song.addEventListener('canplaythrough', () => {
-         backgroundSong.song.loop = true
-         backgroundSong.song.play()
+        backgroundSong.song.loop = true
+        backgroundSong.song.play()
       })
 
       document.body.appendChild(backgroundSong.song)
 
       if (backgroundSong.song.readyState > 3) {
         backgroundSong.song.loop = true
-         backgroundSong.song.play()
+        backgroundSong.song.play()
       }
 
     }
@@ -42,24 +66,49 @@ const BackgroundSong = function (url) {
 }
 
 module.exports =  BackgroundSong
+
 },{}],7:[function(require,module,exports){
+/******************************************************************************
+ * circle.js
+ *
+ * With this module a circle-entity can be created.
+ *
+ * @author Rene Müller <rene.mueller.code@gmail.com>
+ *****************************************************************************/
+
+/**
+ *  @param {number} x - x position
+ *  @param {nubmer} y - y position
+ */
 const Circle = function (x, y){
+
+  /* new instance */
 
   const circle = { 
 
     x           : x, 
     y           : y, 
     radius      : 100 * Math.random(), 
-    startAngle  :   Math.random() * (2 * Math.PI), 
+
+    /* stroke start and end angle */
+    startAngle  : Math.random() * (2 * Math.PI), 
     endAngle    : ((Math.random() * (2 * Math.PI)) + Math.random() * 10) % (2 * Math.PI),
     
-    startAngleChange :  Math.random()/10 ,
+    /* the rate of change, each step */
+    startAngleChange : Math.random()/10,
     endAngleChange   : (Math.random()/10) * 2,
 
-    death       : false, 
+    death       : false,
     lifeTime    : 500 * Math.random(),
+
+    /* how long alive */
     framesAlive : 0, 
 
+    /**
+     *  Entity update method to change status and appearance.
+     *
+     *  @public
+     */
     update: () => {
       circle.startAngle = (circle.startAngle + circle.startAngleChange) % (2 * Math.PI)
       circle.endAngle   = (circle.endAngle   + circle.endAngleChange)   % (2 * Math.PI)
@@ -70,6 +119,12 @@ const Circle = function (x, y){
       circle.death = ++circle.framesAlive > circle.lifeTime
     },
 
+    /**
+     *  Entity draw method. Draws stroke of circle from start- to end-angle.
+     *
+     *  @public
+     *  @param {CanvasRenderingContext2D} context - canvas context
+     */
     draw: (context) => {
       context.beginPath()
 
@@ -81,7 +136,7 @@ const Circle = function (x, y){
         circle.endAngle)
       
       context.lineWidth = Math.max(1, circle.framesAlive / 100) + 
-                        ((Math.random() - 0.5) * (circle.framesAlive / 10))
+                          ((Math.random() - 0.5) * (circle.framesAlive / 10))
       
       context.shadowColor = context.strokeStyle = 'white'
       context.stroke()   
@@ -90,21 +145,51 @@ const Circle = function (x, y){
 
   return circle
 }
+
 module.exports = Circle
+
 },{}],8:[function(require,module,exports){
+/******************************************************************************
+ * dayTime.js
+ *
+ * With this module a updatable background which reflects the daytime can
+ * be created.
+ *
+ * There are four types of daytime (morning, day, night, afternoon). Each 
+ * daytime is one div-Element and has his own background-color. By changing
+ * the opacity of each div, the current daytime can be reflect and two 
+ * daytimes can be fading into each other. 
+ *
+ * @author Rene Müller <rene.mueller.code@gmail.com>
+ *****************************************************************************/
+
+/**
+ *  @param {HTMLElement} domElement - root element
+ */
 const DayTime = function (domElement){
+
+  /* new instance */
 
   const dayTime = {
 
+    /* HTMLElements for each daytime */
     $day       : document.createElement('div'), //  6 - 18
     $night     : document.createElement('div'), // 18 -  6 
     $morning   : document.createElement('div'), //  3 -  9 
     $afternoon : document.createElement('div'), // 15 - 21
 
+    /**
+     *  Initialize daytime instance
+     *  @private
+     */
     init: () => {
       dayTime.createDom()
     },
 
+    /**
+     *  Appends each daytime the root element
+     *  @private
+     */
     createDom: () => {
       dayTime.appendChild(dayTime.$day       , '#00ADFF')
       dayTime.appendChild(dayTime.$night     , '#3F2850')
@@ -112,6 +197,13 @@ const DayTime = function (domElement){
       dayTime.appendChild(dayTime.$afternoon , '#E883E5')
     },
 
+    /**
+     *  Append element to the root element
+     *  
+     *  @private
+     *  @param {HTMLElement} child - child to add to the DOM
+     *  @param {string} color - CSS background-color
+     */
     appendChild: (child, color) => {
 
       child.style.position        = 'absolute'
@@ -128,6 +220,11 @@ const DayTime = function (domElement){
       domElement.appendChild(child)
     },
 
+    /**
+     *  Entity update method to change daytime status.
+     *
+     *  @public
+     */
     update: () => {
       const hour = new Date().getHours()
 
@@ -145,17 +242,56 @@ const DayTime = function (domElement){
 }
 
 module.exports =  DayTime
+
 },{}],9:[function(require,module,exports){
+/******************************************************************************
+ * enityList.js
+ *
+ * With this module all entires can be maintained. This data structure allows
+ * to add new entities, call update and draw on all current entities. Also 
+ * all entities not needed anymore will be cleared, after more than 50 entities
+ * are dead.
+ *
+ * @author Rene Müller <rene.mueller.code@gmail.com>
+ *****************************************************************************/
+
 const EntityList = function  () {
 
+  /* new instance */
+
   const entityList = {
+
+    /**
+     *  how many are dead
+     *  @private
+     *  @types {number}
+     */
     numDeath: 0,
+
+    /**
+     *  list of all entities
+     *  @private
+     *  @types {array}
+     */
     entities: [],
 
+    /**
+     *  Add new entity
+     *
+     *  @public
+     *  @param {object} entity - new entity
+     */
     add: (entity) => {
       entityList.entities.push(entity)
     },
 
+    /**
+     *  Call update on all entities. Also checks
+     *  if there are enough dead entities, to
+     *  clear them.
+     *
+     *  @public
+     */
     update: () => {
       entityList.entities.forEach(entity => {
 
@@ -174,6 +310,29 @@ const EntityList = function  () {
       }
     },
 
+    /**
+     *  Call draw on all entities.
+     *
+     *  @public
+     *  @param {CanvasRenderingContext2D} context - canvas context
+     *  @param {number} height - canvas height
+     *  @param {number} width - canvas width
+     */
+    draw: (context, height, width) => {
+      entityList.entities.forEach(entity => {
+        if (!entity.death){
+          entity.draw(context, height, width)         
+        }
+      })
+    },
+
+    /**
+     *  Call update on all entities. Also checks
+     *  if there are enough dead entities, to
+     *  clear them.
+     *
+     *  @private
+     */
     clearDeath: () => {
       let tmp = []
 
@@ -184,14 +343,6 @@ const EntityList = function  () {
       })
 
       entityList.entities = tmp
-    },
-    
-    draw: (context, height, width) => {
-      entityList.entities.forEach(entity => {
-        if (!entity.death){
-          entity.draw(context, height, width)         
-        }
-      })
     }
   }
 
@@ -199,18 +350,41 @@ const EntityList = function  () {
 }
 
 module.exports =  EntityList
+
 },{}],10:[function(require,module,exports){
+/******************************************************************************
+ * userTab.js
+ *
+ * With this module a userTab-entity can be created.
+ *
+ * A userTab will be visualized by a circle and a music note will be played.
+ * The pitch and volume of the node will dependent by the touch position.
+ *
+ *  * volume is depended on y-position (top:low to bottom:loud)
+ *  * pitch on x-position (left:low to right:high)
+ *  * notes: 11-notes from g-major-scale start form G4
+ *
+ * @author Rene Müller <rene.mueller.code@gmail.com>
+ *****************************************************************************/
+
 /*eslint no-console:0*/
+
+/* vendor */
 
 var ScaleMaker = require('../../node_modules/scale-maker/lib/node/scaleMaker.min');
 
 // global statics
 window.AudioContext = window.AudioContext || window.webkitAudioContext
-const AudioContext = new window.AudioContext()
-const noteLength = 0.5
-const scale = ScaleMaker.makeScale('major', 'G#4', 11)
+const AudioContext  = new window.AudioContext()
+const noteLength    = 0.5
+const scale         = ScaleMaker.makeScale('major', 'G#4', 11)
 
+/**
+ *  @param {object} data - position data of user interaction
+ */
 const UserTap = function  (data){
+
+  /* new instance */
 
   const userTap = {
 
@@ -220,22 +394,34 @@ const UserTap = function  (data){
     lifeTime    : 10,
     framesAlive : 0,
 
+    /**
+     *  Initialize userTab instance
+     *
+     *  @private
+     */
     init: () => {
       userTap.playNote()
     },
 
+    /**
+     *  Plays note dependent on user position. This method uses 
+     *  AudioContext to create sound.
+     *
+     *  @private
+     */
     playNote: () => {
-      const oscillator = AudioContext.createOscillator(),
-          gainNode = AudioContext.createGain(),
-          volume = 0.10 * userTap.data.y,
-          time = AudioContext.currentTime + noteLength,
-          noteInHertz = scale.inHertz[Math.floor(userTap.data.x * scale.inHertz.length)]
+
+      const oscillator  = AudioContext.createOscillator(),
+            gainNode    = AudioContext.createGain(),
+            volume      = 0.10 * userTap.data.y,
+            time        = AudioContext.currentTime + noteLength,
+            noteInHertz = scale.inHertz[Math.floor(userTap.data.x * scale.inHertz.length)]
 
       if (noteInHertz) {
-        oscillator.type = 'sine';
 
+        oscillator.type            = 'sine';
         oscillator.frequency.value = noteInHertz;
-        gainNode.gain.value = 0;
+        gainNode.gain.value        = 0;
         gainNode.connect(AudioContext.destination);
         oscillator.connect(gainNode);
 
@@ -249,11 +435,23 @@ const UserTap = function  (data){
       }
     },
 
+    /**
+     *  Entity update method to change status.
+     *
+     *  @public
+     */
     update: () => {
       userTap.death = ++userTap.framesAlive > userTap.lifeTime
     },
 
+    /**
+     *  Entity draw method. Draws circle of touch position.
+     *
+     *  @public
+     *  @param {CanvasRenderingContext2D} context - canvas context
+     */
     draw: (context) => {
+
       const lifePercent = (userTap.lifeTime - userTap.framesAlive) / userTap.lifeTime 
 
       context.beginPath()
@@ -292,14 +490,29 @@ const UserTap = function  (data){
 }
 
 module.exports =  UserTap
+
 },{"../../node_modules/scale-maker/lib/node/scaleMaker.min":5}],11:[function(require,module,exports){
+/******************************************************************************
+ * rm_atmo.js
+ * https://github.com/renmuell/rm_atmo
+ *
+ * This is an js-canvas driven atmospheric visualization with interaction.
+ *
+ * @see README.md for more information
+ *
+ * @author Rene Müller <rene.mueller.code@gmail.com>
+ *****************************************************************************/
 
 (function (global){
+
+  /* vendors */
 
   require('../node_modules/cengine/dist/cEngine-min');
   require('../node_modules/cengine/dist/plugins/cEngine.frameRate-min');
   require('../node_modules/cengine/dist/plugins/cEngine.fill-min');
   require('../node_modules/cengine/dist/plugins/cEngine.input-min');
+
+  /* modules */
 
   var DayTime        = require('./modules/daytime');
   var UserTab        = require('./modules/userTab');
@@ -309,6 +522,21 @@ module.exports =  UserTap
 
   global.rM_AtMo = {
 
+    /**
+     *  Creates new instance of rM_AtMo:
+     *
+     *  - initializes canvas-engine and starts it
+     *  - adds background elements to show daytime
+     *  - starts background song
+     *  
+     *  @param {object} options - configuration object has:
+     *  {
+     *      {HTMLElement} domElement - root element to fill with content
+     *      {string}      songUrl    - song URL to loop as background song
+     *  }
+     *
+     *  @return {object} - new instance of rM_AtMo
+     */
     create: function (options) {
       
       options = Object.assign({}, {
@@ -316,24 +544,71 @@ module.exports =  UserTap
         songSrc: undefined
       }, options)
 
+      /* new instance */
+
       const rM_AtMo = {
-        callbacks  : [],
-        frame      : 0,
-        entityList : EntityList(),
-        song       : BackgroundSong(options.songSrc),
-        dayTime    : DayTime(options.domElement),
-        engine     : cEngine.create({
+
+        /**
+         *  all callbacks for onTap-Event
+         *  @type {array<function>}
+         *  @private
+         */
+        callbacks: [],
+
+        /**
+         *  current frame number
+         *  @type {number}
+         *  @private
+         */
+        frame: 0,
+
+        /**
+         *  EntityList-Object, for maintaining entities like userTouch or circle.
+         *  @see modules/entiyList
+         *  @private
+         */
+        entityList: EntityList(),
+
+        /**
+         *  BackgroundSong-Object
+         *  @see modules/backgroundSong
+         *  @private
+         */
+        song: typeof options.songSrc != "undefined" ? BackgroundSong(options.songSrc) : undefined,
+
+        /**
+         *  DayTime-Object
+         *  @see modules/dayTime
+         *  @private
+         */
+        dayTime: DayTime(options.domElement),
+
+        /**
+         *  cEngine Instance - Canvas Engine Object
+         *  @see https://github.com/renmuell/cEngine
+         *  @private
+         */
+        engine: cEngine.create({
+
+          /* set root element for canvas */
           domElement: options.domElement,
+          /* set resolution  */
           height: 512,
+          /* redraw true */
           autoClear: true,
+          /* add cEgnine Plug-Ins */
           plugins: {
+            /* frame-rate limiter */
             frameRate: cEngine.frameRate.create({
               fps: 10
             }),
+            /* canvas resize to full root element size */
             fill: cEngine.fill.create({
               mode: 'stretch',
               aspectRetion: true
             }),
+            /* user interaction (desktop and mobile) */
+            /* -> create new UserTap (music note) and fire event */
             input: cEngine.input.create({
               onPan: (ev) => {
                 const data = {
@@ -353,7 +628,8 @@ module.exports =  UserTap
               }
             })
           },
-
+          /* add custom render step for cEngine  */
+          /* -> background circle animation */
           step: (context, height, width) => {
             
             if (rM_AtMo.frame % 55 == 0 || (rM_AtMo.frame < 10)) {
@@ -370,17 +646,41 @@ module.exports =  UserTap
           }
         }),
 
+        /**
+         *  Initialize instance
+         *  - start song
+         *  - start canvas engine
+         *
+         *  @private
+         */
         init: () => {
           setTimeout(function(){
-            rM_AtMo.song.init()
+            
+            if (rM_AtMo.song) {
+              rM_AtMo.song.init()
+            }
+
             rM_AtMo.engine.start()
+
           }, 500)
         },
 
+        /**
+         *  Attach event handler for user interaction.
+         * 
+         *  @public
+         *  @param {callback} - Event callback
+         */
         onTap: (callback) => {
           rM_AtMo.callbacks.push(callback)
         },
 
+        /**
+         *  Fires all callbacks for onTap-Event
+         *
+         *  @private
+         *  @param {object} data - event data for all callbacks
+         */
         emitOnTap: (data) => {
           rM_AtMo.callbacks.forEach(c => c(data))
         }
@@ -393,6 +693,5 @@ module.exports =  UserTap
   }
 
 }(typeof window !== 'undefined' ? window : this))
-
 
 },{"../node_modules/cengine/dist/cEngine-min":1,"../node_modules/cengine/dist/plugins/cEngine.fill-min":2,"../node_modules/cengine/dist/plugins/cEngine.frameRate-min":3,"../node_modules/cengine/dist/plugins/cEngine.input-min":4,"./modules/backgroundSong":6,"./modules/circle":7,"./modules/daytime":8,"./modules/entityList":9,"./modules/userTab":10}]},{},[11]);

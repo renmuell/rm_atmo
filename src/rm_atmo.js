@@ -1,10 +1,24 @@
+/******************************************************************************
+ * rm_atmo.js
+ * https://github.com/renmuell/rm_atmo
+ *
+ * This is an js-canvas driven atmospheric visualization with interaction.
+ *
+ * @see README.md for more information
+ *
+ * @author Rene Müller <rene.mueller.code@gmail.com>
+ *****************************************************************************/
 
 (function (global){
+
+  /* vendors */
 
   require('../node_modules/cengine/dist/cEngine-min');
   require('../node_modules/cengine/dist/plugins/cEngine.frameRate-min');
   require('../node_modules/cengine/dist/plugins/cEngine.fill-min');
   require('../node_modules/cengine/dist/plugins/cEngine.input-min');
+
+  /* modules */
 
   var DayTime        = require('./modules/daytime');
   var UserTab        = require('./modules/userTab');
@@ -14,6 +28,21 @@
 
   global.rM_AtMo = {
 
+    /**
+     *  Creates new instance of rM_AtMo:
+     *
+     *  - initializes canvas-engine and starts it
+     *  - adds background elements to show daytime
+     *  - starts background song
+     *  
+     *  @param {object} options - configuration object has:
+     *  {
+     *      {HTMLElement} domElement - root element to fill with content
+     *      {string}      songUrl    - song URL to loop as background song
+     *  }
+     *
+     *  @return {object} - new instance of rM_AtMo
+     */
     create: function (options) {
       
       options = Object.assign({}, {
@@ -21,24 +50,71 @@
         songSrc: undefined
       }, options)
 
+      /* new instance */
+
       const rM_AtMo = {
-        callbacks  : [],
-        frame      : 0,
-        entityList : EntityList(),
-        song       : BackgroundSong(options.songSrc),
-        dayTime    : DayTime(options.domElement),
-        engine     : cEngine.create({
+
+        /**
+         *  all callbacks for onTap-Event
+         *  @type {array<function>}
+         *  @private
+         */
+        callbacks: [],
+
+        /**
+         *  current frame number
+         *  @type {number}
+         *  @private
+         */
+        frame: 0,
+
+        /**
+         *  EntityList-Object, for maintaining entities like userTouch or circle.
+         *  @see modules/entiyList
+         *  @private
+         */
+        entityList: EntityList(),
+
+        /**
+         *  BackgroundSong-Object
+         *  @see modules/backgroundSong
+         *  @private
+         */
+        song: typeof options.songSrc != "undefined" ? BackgroundSong(options.songSrc) : undefined,
+
+        /**
+         *  DayTime-Object
+         *  @see modules/dayTime
+         *  @private
+         */
+        dayTime: DayTime(options.domElement),
+
+        /**
+         *  cEngine Instance - Canvas Engine Object
+         *  @see https://github.com/renmuell/cEngine
+         *  @private
+         */
+        engine: cEngine.create({
+
+          /* set root element for canvas */
           domElement: options.domElement,
+          /* set resolution  */
           height: 512,
+          /* redraw true */
           autoClear: true,
+          /* add cEgnine Plug-Ins */
           plugins: {
+            /* frame-rate limiter */
             frameRate: cEngine.frameRate.create({
               fps: 10
             }),
+            /* canvas resize to full root element size */
             fill: cEngine.fill.create({
               mode: 'stretch',
               aspectRetion: true
             }),
+            /* user interaction (desktop and mobile) */
+            /* -> create new UserTap (music note) and fire event */
             input: cEngine.input.create({
               onPan: (ev) => {
                 const data = {
@@ -58,7 +134,8 @@
               }
             })
           },
-
+          /* add custom render step for cEngine  */
+          /* -> background circle animation */
           step: (context, height, width) => {
             
             if (rM_AtMo.frame % 55 == 0 || (rM_AtMo.frame < 10)) {
@@ -75,17 +152,41 @@
           }
         }),
 
+        /**
+         *  Initialize instance
+         *  - start song
+         *  - start canvas engine
+         *
+         *  @private
+         */
         init: () => {
           setTimeout(function(){
-            rM_AtMo.song.init()
+            
+            if (rM_AtMo.song) {
+              rM_AtMo.song.init()
+            }
+
             rM_AtMo.engine.start()
+
           }, 500)
         },
 
+        /**
+         *  Attach event handler for user interaction.
+         * 
+         *  @public
+         *  @param {callback} - Event callback
+         */
         onTap: (callback) => {
           rM_AtMo.callbacks.push(callback)
         },
 
+        /**
+         *  Fires all callbacks for onTap-Event
+         *
+         *  @private
+         *  @param {object} data - event data for all callbacks
+         */
         emitOnTap: (data) => {
           rM_AtMo.callbacks.forEach(c => c(data))
         }
@@ -98,4 +199,3 @@
   }
 
 }(typeof window !== 'undefined' ? window : this))
-

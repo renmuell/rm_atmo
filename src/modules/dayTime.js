@@ -1,16 +1,44 @@
+/******************************************************************************
+ * dayTime.js
+ *
+ * With this module a updatable background which reflects the daytime can
+ * be created.
+ *
+ * There are four types of daytime (morning, day, night, afternoon). Each 
+ * daytime is one div-Element and has his own background-color. By changing
+ * the opacity of each div, the current daytime can be reflect and two 
+ * daytimes can be fading into each other. 
+ *
+ * @author Rene Müller <rene.mueller.code@gmail.com>
+ *****************************************************************************/
+
+/**
+ *  @param {HTMLElement} domElement - root element
+ */
 const DayTime = function (domElement){
+
+  /* new instance */
 
   const dayTime = {
 
+    /* HTMLElements for each daytime */
     $day       : document.createElement('div'), //  6 - 18
     $night     : document.createElement('div'), // 18 -  6 
     $morning   : document.createElement('div'), //  3 -  9 
     $afternoon : document.createElement('div'), // 15 - 21
 
+    /**
+     *  Initialize daytime instance
+     *  @private
+     */
     init: () => {
       dayTime.createDom()
     },
 
+    /**
+     *  Appends each daytime the root element
+     *  @private
+     */
     createDom: () => {
       dayTime.appendChild(dayTime.$day       , '#00ADFF')
       dayTime.appendChild(dayTime.$night     , '#3F2850')
@@ -18,6 +46,13 @@ const DayTime = function (domElement){
       dayTime.appendChild(dayTime.$afternoon , '#E883E5')
     },
 
+    /**
+     *  Append element to the root element
+     *  
+     *  @private
+     *  @param {HTMLElement} child - child to add to the DOM
+     *  @param {string} color - CSS background-color
+     */
     appendChild: (child, color) => {
 
       child.style.position        = 'absolute'
@@ -34,6 +69,11 @@ const DayTime = function (domElement){
       domElement.appendChild(child)
     },
 
+    /**
+     *  Entity update method to change daytime status.
+     *
+     *  @public
+     */
     update: () => {
       const hour = new Date().getHours()
 
