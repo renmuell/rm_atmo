@@ -65,9 +65,9 @@ const UserTap = function  (data){
 
       if (noteInHertz) {
 
-        oscillator.type            = 'sine';
-        oscillator.frequency.value = noteInHertz;
-        gainNode.gain.value        = 0;
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(noteInHertz, AudioContext.currentTime); // value in hertz
+
         gainNode.connect(AudioContext.destination);
         oscillator.connect(gainNode);
 
