@@ -1,6 +1,6 @@
 {
   "name": "rm_atmo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "background atmosphere interaction",
   "main": "dist/rm_atmo.js",
   "scripts": {
