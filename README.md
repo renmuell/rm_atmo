@@ -104,7 +104,7 @@ var rm = rM_AtMo.create();
 
 rm.onTap(function (data) {
   console.log('Position X Percent:', data.x);
-  console.log('Position X Percent:', data.y);
+  console.log('Position Y Percent:', data.y);
 });
 
 ```
