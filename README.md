@@ -25,8 +25,8 @@ This is an js-canvas driven atmospheric visualization with interaction.
 
 Choose and copy one build scipt from /dist/ folder:
 
-    * rm_atmo.js
-    * rm_atmo.min.js
+* rm_atmo.js
+* rm_atmo.min.js
 
 Include in your website:
 
