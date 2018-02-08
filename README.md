@@ -118,7 +118,11 @@ rm.onTap(function (data) {
 * [node](https://nodejs.org/)
 * [browserify](http://browserify.org/)
     ```bash
-    $ npm install -g browserify
+    $ npm install browserify -g
+    ```   
+* [uglify-es](https://www.npmjs.com/package/uglify-es)
+    ```bash
+    $ npm install uglify-es -g
     ```   
 
 ### Set up
