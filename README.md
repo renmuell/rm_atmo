@@ -110,3 +110,31 @@ rm.onTap(function (data) {
 });
 
 ```
+
+## Development
+
+### Dependencies
+
+* [node](https://nodejs.org/)
+* [browserify](http://browserify.org/)
+    ```bash
+    $ npm install -g browserify
+    ```   
+
+### Set up
+
+```bash
+$ npm install
+```
+
+### Build
+
+This will:
+
+* create the final script rm_atmo.js to /dist/ folder
+* minify script rm_atmo.min.js to /dist/ folder
+* update demo with new script in /docs/js/ folder
+
+```bash
+$ npm run build
+```
