@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/rm_atmo.svg)](https://badge.fury.io/js/rm_atmo)
 
-This is an js-canvas driven atmospheric visualization with interaction.
+This is a js-canvas driven atmospheric visualization with interaction.
 
 ![rm_atmo teaser](https://renmuell.github.io/assets/img/rm_atmo.gif)
 
@@ -19,16 +19,16 @@ This is an js-canvas driven atmospheric visualization with interaction.
   * notes: 11-notes from g-major-scale start form G4
 * a background song can be looped
 * background-animation: circle outlines appear and hide in random places and sizes. They blink and fill in random speeds.
-* with the use of the cEngine-Framework the framerate is locked at 10FPS for performance reason. Also the canvas is run on a lower resolution and scaled up. The canvas will fill any given root element from edges to edges. See more about these features here: [https://github.com/renmuell/cEngine](https://github.com/renmuell/cEngine)
+* with the use of the cEngine-Framework, the framerate is locked at 10FPS for performance reason. Also, the canvas is run at a lower resolution and scaled up. The canvas will fill any given root element from edges to edges. See more about these features here: [https://github.com/renmuell/cEngine](https://github.com/renmuell/cEngine)
 
 ## Getting started
 
-Choose and copy one build scipt from /dist/ folder:
+Choose and copy one build script from /dist/ folder:
 
 * rm_atmo.js
 * rm_atmo.min.js
 
-Include in your website:
+Include on your website:
 
 ```html
 <script src=".../dist/rm_atmo.min.js"></script>
