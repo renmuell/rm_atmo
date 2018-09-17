@@ -39,6 +39,7 @@
      *  {
      *      {HTMLElement} domElement - root element to fill with content
      *      {string}      songUrl    - song URL to loop as background song
+     *      {bool}        muted      - is sound muted
      *  }
      *
      *  @return {object} - new instance of rM_AtMo
@@ -47,7 +48,8 @@
       
       options = Object.assign({}, {
         domElement: document.body,
-        songSrc: undefined
+        songSrc: undefined,
+        muted: false
       }, options)
 
       /* new instance */
@@ -88,6 +90,13 @@
          *  @private
          */
         dayTime: DayTime(options.domElement),
+        
+        /**
+         *  Is sound muted
+         *  @type bool
+         *  @private
+         */
+        muted: options.muted,
 
         /**
          *  cEngine Instance - Canvas Engine Object
@@ -121,7 +130,7 @@
                   x: ev.x/options.domElement.scrollWidth,
                   y: ev.y/options.domElement.scrollHeight
                 }
-                rM_AtMo.entityList.add(UserTab(data)) 
+                rM_AtMo.entityList.add(UserTab(data, rM_AtMo.muted)) 
                 rM_AtMo.emitOnTap(data)
               },
               onTap: (ev) => {
@@ -129,7 +138,7 @@
                   x: ev.x/options.domElement.scrollWidth,
                   y: ev.y/options.domElement.scrollHeight
                 }
-                rM_AtMo.entityList.add(UserTab(data)) 
+                rM_AtMo.entityList.add(UserTab(data, rM_AtMo.muted)) 
                 rM_AtMo.emitOnTap(data)
               }
             })
@@ -179,6 +188,19 @@
          */
         onTap: (callback) => {
           rM_AtMo.callbacks.push(callback)
+        },
+
+        /**
+         *  Add new UserTap to background.
+         * 
+         *  @public
+         *  @param {object} data - UserTab data
+         *  @param {number} data.x - x coordinate
+         *  @param {number} data.y - y coordinate
+         *  @param {bool} muted - is user tap muted, true if yes, is overruled if rm_atmo is muted.
+         */
+        addUserTap: (data, muted = false) => {
+          rM_AtMo.entityList.add(UserTab(data, rM_AtMo.muted || muted))
         },
 
         /**

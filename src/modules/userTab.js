@@ -27,8 +27,9 @@ const scale         = ScaleMaker.makeScale('major', 'G#4', 11)
 
 /**
  *  @param {object} data - position data of user interaction
+ *  @param {bool} muted - is user tap muted, true if yes
  */
-const UserTap = function  (data){
+const UserTap = function  (data, muted = false){
 
   /* new instance */
 
@@ -59,7 +60,7 @@ const UserTap = function  (data){
 
       const oscillator  = AudioContext.createOscillator(),
             gainNode    = AudioContext.createGain(),
-            volume      = 0.10 * userTap.data.y,
+            volume      = muted ? 0 : 0.10 * userTap.data.y,
             time        = AudioContext.currentTime + noteLength,
             noteInHertz = scale.inHertz[Math.floor(userTap.data.x * scale.inHertz.length)]
 
