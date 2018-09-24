@@ -15,17 +15,27 @@
 /**
  *  @param {HTMLElement} domElement - root element
  */
-const DayTime = function (domElement){
+const DayTime = function (options){
 
   /* new instance */
 
   const dayTime = {
+
+    /**
+     *  Colors for day, night, morning and afternoon.
+     * 
+     *  @type {object}
+     *  @public
+     */
+    colors: options.colors,
 
     /* HTMLElements for each daytime */
     $day       : document.createElement('div'), //  6 - 18
     $night     : document.createElement('div'), // 18 -  6 
     $morning   : document.createElement('div'), //  3 -  9 
     $afternoon : document.createElement('div'), // 15 - 21
+
+    lastSetHour: -1,
 
     /**
      *  Initialize daytime instance
@@ -40,10 +50,28 @@ const DayTime = function (domElement){
      *  @private
      */
     createDom: () => {
-      dayTime.appendChild(dayTime.$day       , '#00ADFF')
-      dayTime.appendChild(dayTime.$night     , '#3F2850')
-      dayTime.appendChild(dayTime.$morning   , '#7D8DF9')
-      dayTime.appendChild(dayTime.$afternoon , '#E883E5')
+      dayTime.appendChild(dayTime.$day       , dayTime.colors.day)
+      dayTime.appendChild(dayTime.$night     , dayTime.colors.night)
+      dayTime.appendChild(dayTime.$morning   , dayTime.colors.morning)
+      dayTime.appendChild(dayTime.$afternoon , dayTime.colors.afternoon)
+
+      var css = ".rm_atmo-day-color{color:"+dayTime.colors.day+"}";
+      css    += ".rm_atmo-day-background-color{background-color:"+dayTime.colors.day+"}"; 
+
+      css    += ".rm_atmo-night-color{color:"+dayTime.colors.night+"}";
+      css    += ".rm_atmo-night-background-color{background-color:"+dayTime.colors.night+"}"; 
+
+      css    += ".rm_atmo-morning-color{color:"+dayTime.colors.morning+"}";
+      css    += ".rm_atmo-morning-background-color{background-color:"+dayTime.colors.morning+"}"; 
+
+      css    += ".rm_atmo-afternoon-color{color:"+dayTime.colors.afternoon+"}";
+      css    += ".rm_atmo-afternoon-background-color{background-color:"+dayTime.colors.afternoon+"}"; 
+
+      var style = document.createElement("style");
+      style.type = 'text/css';
+      style.id = "rm_atmo_static_styles";
+      style.appendChild(document.createTextNode(css));
+      document.head.appendChild(style);
     },
 
     /**
@@ -64,9 +92,10 @@ const DayTime = function (domElement){
 
       child.style.zIndex          = -1000000
       child.style.opacity         = 0
+      child.dataset.color         = color;
       child.style.backgroundColor = color
 
-      domElement.appendChild(child)
+      options.domElement.appendChild(child)
     },
 
     /**
@@ -77,17 +106,118 @@ const DayTime = function (domElement){
     update: () => {
       const hour = new Date().getHours()
 
-      dayTime.$day.style.opacity       = (hour >= 6  && hour <= 18) ? 1                                   : 0
-      dayTime.$night.style.opacity     = (hour >= 6  && hour <= 18) ? 0                                   : 1
-      dayTime.$morning.style.opacity   = (hour >= 3  && hour <= 9 ) ? (-0.1 * Math.pow(hour - 6 , 2)) + 1 : 0 
-      dayTime.$afternoon.style.opacity = (hour >= 15 && hour <= 21) ? (-0.1 * Math.pow(hour - 18, 2)) + 1 : 0
-    }
+      if (dayTime.lastSetHour != hour) {
 
+        dayTime.$day.style.opacity       = (hour >= 6  && hour <= 18) ? 1                                   : 0
+        dayTime.$night.style.opacity     = (hour >= 6  && hour <= 18) ? 0                                   : 1
+        dayTime.$morning.style.opacity   = (hour >= 3  && hour <= 9 ) ? (-0.1 * Math.pow(hour - 6 , 2)) + 1 : 0 
+        dayTime.$afternoon.style.opacity = (hour >= 15 && hour <= 21) ? (-0.1 * Math.pow(hour - 18, 2)) + 1 : 0
+
+        var color;
+
+        if (dayTime.$day.style.opacity > 0) {
+          if (dayTime.$morning.style.opacity > 0) {
+            color = calculateTransparentColor(
+              dayTime.$morning.dataset.color,
+              dayTime.$day.dataset.color,
+              dayTime.$morning.style.opacity);
+          } else {
+            color = calculateTransparentColor(
+              dayTime.$afternoon.dataset.color,
+              dayTime.$day.dataset.color,
+              dayTime.$afternoon.style.opacity);
+          }
+        } else {
+          if (dayTime.$morning.style.opacity > 0) {
+            color = calculateTransparentColor(
+              dayTime.$morning.dataset.color,
+              dayTime.$night.dataset.color,
+              dayTime.$morning.style.opacity);
+          } else {
+            color = calculateTransparentColor(
+              dayTime.$afternoon.dataset.color,
+              dayTime.$night.dataset.color,
+              dayTime.$afternoon.style.opacity);
+          }
+        }
+        
+        dayTime.updateDynamicStyles(color);
+
+        dayTime.lastSetHour = hour;
+      }
+    },
+
+    updateDynamicStyles: function (color) {
+
+      var oldStyles = document.getElementById("rm_atmo_dynamic_styles");
+      if (oldStyles) {
+        oldStyles.remove();
+      }
+
+      var css = ".rm_atmo-daytime-color{color:"+color+"}";
+      css    += ".rm_atmo-daytime-background-color{background-color:"+color+"}"; 
+
+      var style = document.createElement("style");
+      style.type = 'text/css';
+      style.id = "rm_atmo_dynamic_styles";
+      style.appendChild(document.createTextNode(css));
+      document.head.appendChild(style);
+    }
   }
 
   dayTime.init()
 
   return dayTime
+
+  function calculateTransparentColor(
+    foregroundColor, 
+    backgroundColor, 
+    opacity
+  ) {
+      if (opacity < 0.0 || opacity > 1.0) {
+          alert("assertion, opacity should be between 0 and 1");
+      }
+  
+      opacity = opacity * 1.0; // to make it float
+      var foregroundRGB = colorHexToRGB(foregroundColor);
+      var backgroundRGB = colorHexToRGB(backgroundColor);
+      var finalRed   = Math.round(backgroundRGB.r * (1-opacity) + foregroundRGB.r * opacity);
+      var finalGreen = Math.round(backgroundRGB.g * (1-opacity) + foregroundRGB.g * opacity);
+      var finalBlue  = Math.round(backgroundRGB.b * (1-opacity) + foregroundRGB.b * opacity);
+      return colorRGBToHex(finalRed, finalGreen, finalBlue);
+  }
+  
+  function colorHexToRGB (htmlColor) {
+      var COLOR_REGEX = /^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/;
+      var arrRGB = htmlColor.match(COLOR_REGEX);
+      if (arrRGB == null) {
+          alert("Invalid color passed, the color should be in the html format. Example: #ff0033");
+      }
+      var red   = parseInt(arrRGB[1], 16);
+      var green = parseInt(arrRGB[2], 16);
+      var blue  = parseInt(arrRGB[3], 16);
+      return {"r":red, "g":green, "b":blue};
+  }
+
+  function colorRGBToHex(red, green, blue) {
+      if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255) {
+          alert("Invalid color value passed. Should be between 0 and 255.");
+      }
+
+      var hexRed   = formatHex(red.toString(16));
+      var hexGreen = formatHex(green.toString(16));
+      var hexBlue  = formatHex(blue.toString(16));
+
+      return "#" + hexRed + hexGreen + hexBlue;
+  }
+
+  function formatHex(value) {
+      value = value + "";
+      if (value.length == 1) {
+          return "0" + value;
+      }
+      return value;
+  }
 }
 
 module.exports =  DayTime

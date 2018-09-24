@@ -37,9 +37,10 @@
      *  
      *  @param {object} options - configuration object has:
      *  {
-     *      {HTMLElement} domElement - root element to fill with content
-     *      {string}      songUrl    - song URL to loop as background song
-     *      {bool}        muted      - is sound muted
+     *      {HTMLElement} domElement - root element to fill with content.
+     *      {string}      songUrl    - song URL to loop as background song.
+     *      {bool}        muted      - is sound muted.
+     *      {object}      colors     - colors for day, night, morning and afternoon. 
      *  }
      *
      *  @return {object} - new instance of rM_AtMo
@@ -49,7 +50,13 @@
       options = Object.assign({}, {
         domElement: document.body,
         songSrc: undefined,
-        muted: false
+        muted: false,
+        colors: {
+          day: '#00ADFF',
+          night: '#3F2850',
+          morning: '#7D8DF9',
+          afternoon: '#E883E5'
+        }
       }, options)
 
       /* new instance */
@@ -89,7 +96,7 @@
          *  @see modules/dayTime
          *  @private
          */
-        dayTime: DayTime(options.domElement),
+        dayTime: DayTime(options),
         
         /**
          *  Is sound muted
@@ -125,15 +132,7 @@
             /* user interaction (desktop and mobile) */
             /* -> create new UserTap (music note) and fire event */
             input: cEngine.input.create({
-              onPan: (ev) => {
-                const data = {
-                  x: ev.x/options.domElement.scrollWidth,
-                  y: ev.y/options.domElement.scrollHeight
-                }
-                rM_AtMo.entityList.add(UserTab(data, rM_AtMo.muted)) 
-                rM_AtMo.emitOnTap(data)
-              },
-              onTap: (ev) => {
+              onTouch: (ev) => {
                 const data = {
                   x: ev.x/options.domElement.scrollWidth,
                   y: ev.y/options.domElement.scrollHeight

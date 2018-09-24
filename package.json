@@ -1,6 +1,6 @@
 {
   "name": "rm_atmo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "background atmosphere interaction",
   "main": "dist/rm_atmo.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/renmuell/rm_atmo#readme",
   "dependencies": {},
   "devDependencies": {
-    "cengine": "^0.1.8",
+    "cengine": "^0.1.9",
     "scale-maker": "^0.2.2"
   }
 }
