@@ -55,20 +55,24 @@ const Circle = function (x, y){
      *  @public
      *  @param {CanvasRenderingContext2D} context - canvas context
      */
-    draw: (context) => {
+    draw: (context, data) => {
       context.beginPath()
-
+      context.lineCap = "round";
       context.arc(
         circle.x, 
         circle.y, 
         circle.radius, 
         circle.startAngle, 
         circle.endAngle)
-      
-      context.lineWidth = Math.max(1, circle.framesAlive / 100) + 
-                          ((Math.random() - 0.5) * (circle.framesAlive / 10))
+        
+      context.lineWidth = Math.max(1, circle.framesAlive / 100) + ((Math.random() - 0.5) * (circle.framesAlive / 10))
       
       context.shadowColor = context.strokeStyle = 'white'
+
+      if (data.countTouches > 0 && Math.random() > 0.1) {
+        context.shadowColor = context.strokeStyle = 'rgba(255,255,255,0.1)'
+      }
+
       context.stroke()   
     }
   }

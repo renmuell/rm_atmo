@@ -1,10 +1,10 @@
 {
   "name": "rm_atmo",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "background atmosphere interaction",
   "main": "dist/rm_atmo.js",
   "scripts": {
-    "build": "browserify src/rm_atmo.js -o dist/rm_atmo.js | browserify src/rm_atmo.js | uglifyjs > dist/rm_atmo.min.js | browserify src/rm_atmo.js | uglifyjs > docs/assets/js/rm_atmo.min.js",
+    "build": "browserify -t browserify-css -t svg-browserify src/rm_atmo.js -o dist/rm_atmo.js | browserify -t browserify-css -t svg-browserify src/rm_atmo.js | uglifyjs > dist/rm_atmo.min.js | browserify -t browserify-css -t svg-browserify src/rm_atmo.js | uglifyjs > docs/assets/js/rm_atmo.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,7 +29,9 @@
   "homepage": "https://github.com/renmuell/rm_atmo#readme",
   "dependencies": {},
   "devDependencies": {
-    "cengine": "^0.1.9",
-    "scale-maker": "^0.2.2"
+    "browserify-css": "^0.14.0",
+    "cengine": "^0.1.12",
+    "scale-maker": "^0.2.2",
+    "svg-browserify": "0.0.2"
   }
 }

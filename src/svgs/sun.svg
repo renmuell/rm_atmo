@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="sun" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="349.361px" height="349.362px" viewBox="0 0 349.361 349.362" style="enable-background:new 0 0 349.361 349.362;"
+	 xml:space="preserve">
+<g id="sunBody">
+	<g id="body">
+		<g id="bodyShadow">
+			<g>
+				<circle style="fill-rule:evenodd;clip-rule:evenodd;fill:#DDC518;" cx="174.775" cy="174.212" r="122"/>
+			</g>
+		</g>
+		<g id="bodyFront">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2A;" d="M261.06,87.927c-47.62-47.62-124.828-47.621-172.448,0
+					C40.991,135.547,60.529,207,105.884,255.667c28.634,30.724,107.556,52.33,155.176,4.709
+					C308.68,212.755,308.68,135.547,261.06,87.927z"/>
+			</g>
+		</g>
+	</g>
+	<g id="happyFace">
+		<g id="hfMouth">
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#020304;" d="M169.288,185.641c-19.256,2.401,10.964,47.317,46.937,36.027
+				c35.974-11.291,34.535-52.166,23.074-49.051L169.288,185.641z"/>
+		</g>
+		<g id="hfEyeLeft">
+			<g>
+				<circle style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" cx="154.092" cy="148.721" r="15.5"/>
+			</g>
+		</g>
+		<g id="hfEyeRight">
+			<g>
+				<circle style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" cx="235.601" cy="136.68" r="15.5"/>
+			</g>
+		</g>
+	</g>
+	<g id="superHappyFace">
+		<g id="shfMouth">
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#020304;" d="M169.288,185.641c-19.256,2.401,10.964,47.317,46.937,36.027
+				c35.974-11.291,34.535-52.166,23.074-49.051L169.288,185.641z"/>
+		</g>
+		<g id="shfEyeLeft">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" d="M149.886,133.403c8.22-2.389,16.82,2.339,19.209,10.56
+					c2.389,8.22-6.854-0.436-15.075,1.953c-8.22,2.389-12.306,14.917-14.694,6.696C136.938,144.392,141.666,135.792,149.886,133.403
+					z"/>
+			</g>
+		</g>
+		<g id="shfEyeRight">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" d="M250.716,132.948c-2.064-8.308-10.472-13.371-18.78-11.307
+					s-13.37,10.471-11.307,18.779c2.063,8.308,7.186-4.346,15.494-6.41C244.431,131.947,252.779,141.256,250.716,132.948z"/>
+			</g>
+		</g>
+		
+			<ellipse id="shfBlushLeft_2_" transform="matrix(0.8204 0.5718 -0.5718 0.8204 132.498 -43.7131)" style="fill-rule:evenodd;clip-rule:evenodd;fill:#F39232;" cx="135.831" cy="189.052" rx="12.652" ry="12.725"/>
+		
+			<ellipse id="shfBlushRight_2_" transform="matrix(0.9927 -0.1202 0.1202 0.9927 -18.1233 33.3341)" style="fill-rule:evenodd;clip-rule:evenodd;fill:#F39232;" cx="267.243" cy="166.89" rx="10.525" ry="11.528"/>
+	</g>
+	<g id="glow" style="opacity:0.2392;">
+		<g style="display:inline;">
+			<circle style="fill-rule:evenodd;clip-rule:evenodd;fill:#F6EB5D;" cx="174.275" cy="172.712" r="131.5"/>
+		</g>
+	</g>
+</g>
+<g id="shines">
+	<g id="shine8">
+		<g>
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2E;" d="M14.021,88.67c1.396-2.697,4.717-3.751,7.413-2.354
+				l26.638,13.8c2.697,1.397,3.751,4.717,2.354,7.414c-1.397,2.696-4.717,3.75-7.414,2.354L16.375,96.083
+				C13.678,94.687,12.624,91.367,14.021,88.67z"/>
+		</g>
+	</g>
+	<g id="shine7">
+		<g>
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2E;" d="M299.135,241.454c1.429-2.68,4.76-3.694,7.441-2.266
+				l26.472,14.116c2.68,1.429,3.694,4.761,2.265,7.44c-1.429,2.681-4.761,3.695-7.441,2.266L301.4,248.896
+				C298.72,247.466,297.705,244.135,299.135,241.454z"/>
+		</g>
+	</g>
+	<g id="shine6">
+		<g>
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2E;" d="M3.837,220.56l28.593-9.077
+				c2.896-0.919,5.988,0.683,6.907,3.578c0.919,2.895-0.683,5.986-3.578,6.906l-28.594,9.077c-2.896,0.919-5.987-0.683-6.906-3.578
+				C-0.66,224.571,0.941,221.479,3.837,220.56z"/>
+		</g>
+	</g>
+	<g id="shine5">
+		<g>
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2E;" d="M313.559,127.032l28.699-8.737
+				c2.906-0.885,5.979,0.754,6.863,3.659c0.885,2.906-0.753,5.979-3.66,6.863l-28.699,8.737c-2.906,0.885-5.979-0.754-6.863-3.659
+				C309.015,130.989,310.653,127.917,313.559,127.032z"/>
+		</g>
+	</g>
+	<g id="shine4">
+		<g>
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2E;" d="M86.317,327.928l13.8-26.638
+				c1.397-2.697,4.717-3.751,7.414-2.354s3.75,4.717,2.354,7.413l-13.801,26.638c-1.396,2.697-4.716,3.751-7.413,2.354
+				C85.974,333.944,84.92,330.625,86.317,327.928z"/>
+		</g>
+	</g>
+	<g id="shine3">
+		<g>
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2E;" d="M239.19,42.787l14.116-26.472
+				c1.429-2.681,4.76-3.695,7.441-2.266c2.68,1.429,3.694,4.761,2.265,7.441l-14.115,26.472c-1.43,2.68-4.761,3.694-7.441,2.265
+				C238.775,48.799,237.761,45.467,239.19,42.787z"/>
+		</g>
+	</g>
+	<g id="shine2">
+		<g>
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2E;" d="M215.061,310.025c2.895-0.919,5.987,0.683,6.906,3.578
+				l9.078,28.594c0.919,2.896-0.683,5.987-3.578,6.906c-2.895,0.919-5.987-0.683-6.906-3.578l-9.078-28.594
+				C210.564,314.037,212.166,310.944,215.061,310.025z"/>
+		</g>
+	</g>
+	<g id="shine1">
+		<g>
+			<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#FDEB2E;" d="M121.955,0.24c2.906-0.885,5.979,0.754,6.863,3.66
+				l8.738,28.699c0.884,2.906-0.754,5.979-3.66,6.863s-5.979-0.754-6.863-3.659l-8.738-28.7
+				C117.411,4.198,119.049,1.125,121.955,0.24z"/>
+		</g>
+	</g>
+</g>
+</svg>

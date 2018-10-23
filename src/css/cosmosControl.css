@@ -1,0 +1,241 @@
+.cosmosControl {
+    touch-action: none;
+    position: absolute;
+    border: 5px dashed transparent;
+    bottom: 0;
+    border-radius: 50%;
+    left: 50%;
+    transform: translate(-50%,50%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.cosmosControl.active,
+.cosmosControl:active {
+    border: 5px dashed rgba(255,255,255,.5);
+}
+
+svg {
+    touch-action: none;
+    box-sizing: border-box;
+    transition: padding .1s ease-in-out;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
+    pointer-events: all;
+}
+
+svg.active, 
+svg:active {
+    padding: 10px;
+    cursor: pointer;
+    cursor: -webkit-grabbing;
+}
+
+svg#moon #superHappyFace {
+    display: none !important;
+}
+
+svg#moon.active #superHappyFace,
+svg#moon:active #superHappyFace {
+    display: inline !important;
+}
+
+svg#moon.active #happyFace,
+svg#moon:active #happyFace {
+    display: none !important;
+}
+
+svg#sun #superHappyFace {
+    display: none !important;
+}
+
+svg#sun.active #superHappyFace,
+svg#sun:active #superHappyFace {
+    display: inline !important;
+}
+
+svg#sun.active #happyFace,
+svg#sun:active #happyFace {
+    display: none !important;
+}
+
+svg#sun.active #shines,
+svg#sun:active #shines {
+    animation-duration: 3s;
+}
+
+svg#cloud {
+    display: none;
+    width: 200px;
+    height: 200px;
+    overflow: visible;
+    position: absolute;
+    left: -100px;
+    top: 50px;
+    transform: translate(-50%, -50%);
+    animation: sun .7s linear infinite alternate;
+}
+
+svg#cloud2 {
+    display: none;
+    width: 200px;
+    height: 200px;
+    overflow: visible;
+    position: absolute;
+    left: 260px;
+    top: 170px;
+    transform: translate(-50%, -50%);
+    animation: sun .7s linear infinite alternate;
+}
+
+#moon-wrapper {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, -50%);
+}
+
+svg#moon{
+    width: 160px;
+    height: 160px;
+    overflow: visible;
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    animation: sun .7s linear infinite alternate;
+}
+
+svg#moon #hfEyeLeft,
+svg#moon #hfEyeRight,
+svg#moon #shfEyeLeft,
+svg#moon #shfEyeRight {
+    transform-origin: center;
+    transform: rotateX(0deg) rotateY(0deg);
+    animation: eye .7s linear infinite alternate;
+}
+
+svg#moon #hfMouth,
+svg#moon #shfMouth {
+    transform-origin: center;
+    transform: scale(1);
+    animation: mouth .7s linear infinite alternate;
+}
+
+svg#moon #glow {
+    transform-origin: center;
+    transform: scale(1);
+    animation: glow .7s linear infinite alternate;
+}
+
+#sun-wrapper {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%, -50%);
+}
+
+svg#sun {
+    width: 200px;
+    height: 200px;
+    overflow: visible;
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    animation: sun .7s linear infinite alternate;
+}
+
+svg#sun #hfEyeLeft,
+svg#sun #hfEyeRight,
+svg#sun #shfEyeLeft,
+svg#sun #shfEyeRight {
+    transform-origin: center;
+    transform: rotateX(0deg) rotateY(0deg);
+    animation: eye .7s linear infinite alternate;
+}
+
+svg#sun #shines {
+    transform-origin: center;
+    transform: rotateZ(0deg);
+    animation: shine 5s linear infinite;
+}
+
+svg#sun #hfMouth,
+svg#sun #shfMouth {
+    transform-origin: center;
+    transform: scale(1);
+    animation: mouth .7s linear infinite alternate;
+}
+
+svg#sun #glow {
+    transform-origin: center;
+    transform: scale(1);
+    animation: glow .7s linear infinite alternate;
+}
+
+@keyframes shine {
+    0% {
+        transform: rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes mouth {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.96);
+    }
+}
+
+@keyframes glow {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes eye {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateX(20deg) rotateY(-5deg);
+    }
+}
+
+@keyframes sun {
+    0% {
+        transform: translate(-50%, -50%)
+    }
+
+    100% {
+        transform: translate(-50%, -52%)
+    }
+}

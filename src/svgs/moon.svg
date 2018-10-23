@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="moon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="272px" height="272px" viewBox="0 0 272 272" style="enable-background:new 0 0 272 272;" xml:space="preserve">
+<g id="body">
+	<g id="bodyShadow">
+		<g>
+			<circle style="fill-rule:evenodd;clip-rule:evenodd;fill:#D8D9D9;" cx="138" cy="137" r="122"/>
+		</g>
+	</g>
+	<g id="bodyLight">
+		<g>
+			<circle style="fill-rule:evenodd;clip-rule:evenodd;fill:#F8F7F7;" cx="132.5" cy="131.5" r="116.5"/>
+		</g>
+	</g>
+	<g id="happyFace">
+		<g id="hfEyeLeft">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" d="M80.781,139.643c-0.745-4.478-7.812,3.083-15.758,6.092
+					c-7.946,3.01-13.764,0.329-13.018,4.806c0.746,4.478,7.792,5.668,15.738,2.658C75.689,150.189,81.527,144.12,80.781,139.643z"/>
+			</g>
+		</g>
+		<g id="hfEyeRight">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" d="M166.111,108.27c-0.545-4.507-7.942,2.729-16.015,5.381
+					c-8.073,2.65-13.765-0.288-13.22,4.219c0.545,4.506,7.53,6.01,15.604,3.359C160.553,118.577,166.656,112.775,166.111,108.27z"/>
+			</g>
+		</g>
+		<g id="hfMouth">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" d="M143.169,180.187c-2.359-7.466-11.067-5.408-20.624-2.393
+					c-9.557,3.015-16.344,5.846-13.984,13.312s10.925,8.646,20.482,5.63C138.6,193.721,145.528,187.652,143.169,180.187z"/>
+			</g>
+		</g>
+	</g>
+	<g id="craters">
+		<g id="crater3" style="opacity:0.4784;">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#B8B8B8;" d="M225.095,136.173c-7.386-6.688-18.563-4.802-24.967,4.216
+					c-6.403,9.017-5.607,21.749,1.777,28.438c7.386,6.688,18.563,4.802,24.967-4.216
+					C233.275,155.595,232.479,142.862,225.095,136.173z"/>
+			</g>
+		</g>
+		<g id="crater2" style="opacity:0.4784;">
+			<g>
+				<path style="fill:#BDBCBC;" d="M87.205,66.881c-2.361-8.992-12.012-12.758-21.554-8.412S50.288,73.627,52.649,82.618
+					c2.361,8.992,12.012,12.758,21.554,8.412S89.566,75.872,87.205,66.881z"/>
+			</g>
+		</g>
+		<g id="crater1" style="opacity:0.4784;">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#C8C7C7;" d="M71.332,184.373c-3.051-5.457-9.701-8.033-14.854-5.754
+					c-5.154,2.279-6.859,8.551-3.81,14.008c3.051,5.457,9.701,8.033,14.854,5.754C72.677,196.102,74.382,189.83,71.332,184.373z"/>
+			</g>
+		</g>
+	</g>
+	<g id="superHappyFace">
+		<g id="shfEyeLeft">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" d="M80.867,142.194c-0.851-4.459-7.923-5.484-15.796-2.289
+					c-7.873,3.194-13.567,9.398-12.716,13.857c0.85,4.459,7.737-3.265,15.611-6.459C75.839,144.108,81.717,146.651,80.867,142.194z"
+					/>
+			</g>
+		</g>
+		<g id="shfEyeRight">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" d="M166.332,111.632c-0.487-4.513-7.452-6.107-15.559-3.561
+					c-8.106,2.547-14.284,8.27-13.797,12.782c0.487,4.514,7.977-2.626,16.083-5.174
+					C161.166,113.133,166.818,116.145,166.332,111.632z"/>
+			</g>
+		</g>
+		<g id="shfMouth">
+			<g>
+				<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#010202;" d="M143.352,180.137c-2.359-7.466-11.067-5.408-20.624-2.393
+					c-9.557,3.015-16.344,5.846-13.984,13.312s10.925,8.646,20.482,5.63C138.782,193.671,145.711,187.603,143.352,180.137z"/>
+			</g>
+		</g>
+		<path id="shfBlushRight" style="fill-rule:evenodd;clip-rule:evenodd;fill:#EE6F48;" d="M42.713,166.43
+			c1.895-4.119,6.442-6.012,10.159-4.227c3.715,1.784,5.192,6.569,3.298,10.688c-1.895,4.119-6.442,6.011-10.159,4.227
+			C42.295,175.333,40.819,170.548,42.713,166.43z"/>
+		
+			<ellipse id="shfBlushLeft" transform="matrix(0.8204 0.5718 -0.5718 0.8204 104.607 -82.2129)" style="fill-rule:evenodd;clip-rule:evenodd;fill:#EE6F48;" cx="183.164" cy="125.399" rx="10.769" ry="10.832"/>
+	</g>
+</g>
+<g id="glow" style="opacity:0.2392;">
+	<g>
+		<circle style="fill:#D8D9D9;" cx="136" cy="136" r="136"/>
+	</g>
+</g>
+</svg>

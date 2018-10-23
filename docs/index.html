@@ -1,42 +1,567 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf8"/>
   <title>rM_AtMo Demo Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="assets/css/ribbons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css">
   <style type="text/css">
     html, body {
-      height: 100%;
-      width: 100%;
-      padding: 0;
+      font-family:Arial;
       margin:0;
-      position: relative;
-      overflow: hidden;
+      padding:0;
     }
-    
-    .background {
-      position: absolute;
-      top:0;
-      left:0;
-      right: 0;
-      bottom:0;
+
+    body {
+      border-left-width:20px;
+      border-left-style: solid;
     }
+
+    main {
+      max-width: 90%;
+      padding:20px;
+      width: 1200px;
+      margin:0 auto;
+    }
+
+    hr {
+      border: none;
+      border-bottom: 1px solid #ccc;
+    }
+
+    table {
+      border-spacing: 0;
+      width:100%;
+      border:1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    table tr {
+      padding:0;
+      margin:0;
+    }
+
+    table td {
+      padding:5px;
+      margin:0;
+      border-bottom: 1px solid #ccc;
+      border-right:  1px solid #ccc;
+    }
+
+    table th {
+      border-bottom:  none;
+  
+      padding:5px;
+      border-bottom:1px solid #ccc;
+      border-right:1px solid #ccc;
+    }
+
+    table th:last-child {
+      border-right:  none;
+    }
+
+    table tr:nth-last-child(2) th {
+      border-bottom:  none;
+    }
+
+    table td:last-of-type {
+      border-right:  none;
+    }
+
+    table tr:last-of-type td {
+      border-bottom:  none;
+    }
+
+    .example {
+      position:relative;
+      width: 100%;
+      height:300px; 
+      overflow:hidden;
+      border-radius: 10px;
+    }
+
+    pre {
+      border-radius: 10px;
+    }
+
+    h1, h2, h3, h4 {
+      border-bottom: 1px solid #ccc;
+    }
+
   </style>
+  <script type="text/javascript" src="assets/js/rm_atmo.min.js"></script>
+
 </head>
-<body>
-    <div class="background"></div>
+<body class="rm_atmo-daytime-border-color">
 
-    <div class="ribbon right black">
-      <a href="https://github.com/renmuell/rm_atmo">Fork me on GitHub</a>
-    </div>
+  <main>
+    <article>
+      <h1 class="rm_atmo-daytime-color">rM_AtMo.js</h1>
 
-    <script type="text/javascript" src="assets/js/rm_atmo.min.js"></script>
-    <script type="text/javascript">
+      <p>
+          rm_AtMo.js is a JavaScript canvas driven atmospheric visualization with interaction.
+      </p>
 
-        var rm = rM_AtMo.create({
-            domElement: document.getElementsByClassName("background")[0]
+      <div id="example_1" class="example"></div>
+      <script id="code_1" type="text/javascript">
+        rM_AtMo.create({
+            domElement: document.getElementById("example_1")
+        })
+      </script>
+
+      <h2 class="rm_atmo-daytime-color">Usage</h2>
+      <pre><code class="code_view language-javascript line-numbers" data-code="code_1"></code></pre>
+
+      <h2 class="rm_atmo-daytime-color">Demo</h2>
+      <p>
+        <a href="fullscreen.html">Full-Screen Demo</a>
+      </p>
+
+      <h2 class="rm_atmo-daytime-color">Features</h2>
+
+      <!-- DayTime  -->
+
+      <h3 class="rm_atmo-daytime-color">DayTime</h3>
+
+      <p>
+        This visualization showcases four types of daytimes: morning, day, afternoon and night. 
+      </p>
+
+      <style>
+        .daytime_example {
+          width: 20%;
+          margin:2.5%;
+          min-width: 150px;
+          position: relative;
+        }
+        .daytime_example:before {
+          background:white;
+          border-radius: 10px;
+          content: "day";
+          position:absolute;
+          left:50%;
+          padding:8px;
+          text-align: center;
+          min-width: 50%;
+          font-size: 22px;
+          top:-10px;
+          transform: translateX(-50%);
+        }
+        #example_5:before {
+          content: "Morning";
+        }
+        #example_6:before {
+          content: "Day";
+        }
+        #example_7:before {
+          content: "Afternoon";
+        }
+        #example_8:before {
+          content: "Night";
+        }
+      </style>
+
+      <div style="display: flex; flex-grow: 1; flex-wrap: wrap">
+        <div id="example_5" class="example daytime_example rm_atmo-morning-color"></div>
+        <div id="example_6" class="example daytime_example rm_atmo-day-color"></div>
+        <div id="example_7" class="example daytime_example rm_atmo-afternoon-color"></div>
+        <div id="example_8" class="example daytime_example rm_atmo-night-color"></div>
+        <div style="clear:both"></div>
+      </div>
+      <script type="text/javascript">
+        let morning = rM_AtMo.create({
+            domElement: document.getElementById("example_5")
+        })
+        morning.setHours(6);
+        let day = rM_AtMo.create({
+            domElement: document.getElementById("example_6")
+        })        
+        day.setHours(12);
+        let afternoon = rM_AtMo.create({
+            domElement: document.getElementById("example_7")
+        })
+        afternoon.setHours(18);
+        let night = rM_AtMo.create({
+            domElement: document.getElementById("example_8")
+        })
+        night.setHours(24);
+      </script>
+
+      <!-- CosmosControl  -->
+
+      <h3 class="rm_atmo-daytime-color">CosmosControl</h3>
+
+      <div id="example_2" class="example"></div>
+      <script id="code_2" type="text/javascript">
+        rM_AtMo.create({
+            domElement: document.getElementById("example_2"),
+            showCosmosControl: true
+        })
+      </script>
+
+      <h4 class="rm_atmo-daytime-color">Usage</h4>
+
+      <pre><code class="code_view language-javascript line-numbers" data-code="code_2"></code></pre>
+
+      <!-- Custom CSS -->
+
+      <h3 class="rm_atmo-daytime-color">Custom CSS</h3>
+
+      <div id="example_3" class="example"></div>
+      <script id="code_3" type="text/javascript">
+        rM_AtMo.create({
+            domElement: document.getElementById("example_3"),
+            showCosmosControl: true,
+            renderCss: true
+        })
+      </script>
+
+      <h4 class="rm_atmo-daytime-color">Usage</h4>
+
+      <pre><code class="code_view language-javascript line-numbers" data-code="code_3"></code></pre>
+
+      <p>
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>CSS-Property</th>
+              <th>CSS-Class</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th rowspan="3">DayTime</th>
+              <td>color</td>
+              <td>rm_atmo-daytime-color</td>
+              <td>
+                <span class="rm_atmo-daytime-color">Example Text</span>
+              </td>
+            </tr>
+            <tr>
+              <td>background-color</td>
+              <td>rm_atmo-daytime-background-color</td>
+              <td>
+                <div class="rm_atmo-daytime-background-color" style="color:white;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>border-color</td>
+              <td>rm_atmo-daytime-border-color</td>
+              <td>
+                <div class="rm_atmo-daytime-border-color" style="border-width: 2px; border-style: solid;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="3">Morning</th>
+              <td>color</td>
+              <td>rm_atmo-morning-color</td>
+              <td>
+                <span class="rm_atmo-morning-color">Example Text</span>
+              </td>
+            </tr>
+            <tr>
+              <td>background-color</td>
+              <td>rm_atmo-morning-background-color</td>
+              <td>
+                <div class="rm_atmo-morning-background-color" style="color:white;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>border-color</td>
+              <td>rm_atmo-morning-border-color</td>
+              <td>
+                <div class="rm_atmo-morning-border-color" style="border-width: 2px; border-style: solid;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="3">Day</th>
+              <td>color</td>
+              <td>rm_atmo-day-color</td>
+              <td>
+                <span class="rm_atmo-day-color">Example Text</span>
+              </td>
+            </tr>
+            <tr>
+              <td>background-color</td>
+              <td>rm_atmo-day-background-color</td>
+              <td>
+                <div class="rm_atmo-day-background-color" style="color:white;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>border-color</td>
+              <td>rm_atmo-day-border-color</td>
+              <td>
+                <div class="rm_atmo-day-border-color" style="border-width: 2px; border-style: solid;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="3">Afternoon</th>
+              <td>color</td>
+              <td>rm_atmo-afternoon-color</td>
+              <td>
+                <span class="rm_atmo-afternoon-color">Example Text</span>
+              </td>
+            </tr>
+            <tr>
+              <td>background-color</td>
+              <td>rm_atmo-afternoon-background-color</td>
+              <td>
+                <div class="rm_atmo-afternoon-background-color" style="color:white;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>border-color</td>
+              <td>rm_atmo-afternoon-border-color</td>
+              <td>
+                <div class="rm_atmo-afternoon-border-color" style="border-width: 2px; border-style: solid;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="3">Night</th>
+              <td>color</td>
+              <td>rm_atmo-night-color</td>
+              <td>
+                <span class="rm_atmo-night-color">Example Text</span>
+              </td>
+            </tr>
+            <tr>
+              <td>background-color</td>
+              <td>rm_atmo-night-background-color</td>
+              <td>
+                <div class="rm_atmo-night-background-color" style="color:white;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>border-color</td>
+              <td>rm_atmo-night-border-color</td>
+              <td>
+                <div class="rm_atmo-night-border-color" style="border-width: 2px; border-style: solid;padding:5px;"> 
+                    Example Text
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </p>
+
+      <h2 class="rm_atmo-daytime-color">JavaScript</h2>
+
+      <!-- onTap -->
+
+      <h3 class="rm_atmo-daytime-color">onTap Event</h3>
+
+      <div id="example_onTap" class="example" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;"></div>
+      <div style="border:1px solid #ccc; border-radius: 10px;padding:10px;border-top-left-radius: 0;border-top-right-radius: 0;margin-top:0;">
+        <p>Event:</p>
+        <p>
+          Timestamp: <output id="output_t"></output><br>
+          X: <output id="output_x"></output><br>
+          Y: <output id="output_y"></output><br>
+        </p>
+        
+      </div>
+      
+      <script id="code_11" type="text/javascript">
+        let rm_onTap = rM_AtMo.create({
+            domElement: document.getElementById("example_onTap"),
         })
 
+        rm_onTap.onTap(function(data){
+          document.getElementById("output_t").value = Date.now();
+          document.getElementById("output_x").value = data.x;
+          document.getElementById("output_y").value = data.y;
+        })
+      </script>
+
+      <h4 class="rm_atmo-daytime-color">Usage</h4>
+
+      <pre><code class="code_view language-javascript line-numbers" data-code="code_11"></code></pre>
+
+      <!-- addUserTap -->
+
+      <h3 class="rm_atmo-daytime-color">addUserTap Method</h3>
+
+      <div id="example_addUserTap" class="example" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;"></div>
+      <style>
+        form {
+          width: 100%;
+          box-sizing: border-box;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          margin: 10px 0;
+          padding:10px;
+        }
+        form label {
+          padding: 10px;
+          width: 100px;
+          display: inline-block;
+          text-align: right;
+        }
+        form input[type="range"]{
+          width: 500px;
+        }
+        form input[type="range"]:after{
+          content:attr(value);
+          display: block;
+          position: relative;
+          left: 40px;
+        }
+        form input[type="submit"] {
+          margin-left:120px;
+          font-size: 2em;
+          padding:10px;
+        }
+      </style>
+      <form id="form_addUserTap" style="border-top-left-radius: 0;border-top-right-radius: 0;margin-top:0;">
+        <div>
+          <label>X:</label>
+          <input name="x" type="range" min="0" max="1" step="0.0001" value="0.5" onchange="this.setAttribute('value', this.value)">
+        </div>
+        <div>
+          <label>Y:</label>
+          <input name="y" type="range" min="0" max="1" step="0.0001"  value="0.5" onchange="this.setAttribute('value', this.value)">
+        </div>
+        <div>
+          <label for="example_addUserTap_muted">Muted:</label>
+          <input name="muted" id="example_addUserTap_muted" type="checkbox">
+        </div>
+        <input type="submit" value="Set Tap">
+      </form>
+      
+      <script id="code_12" type="text/javascript">
+        let rm_addUserTap = rM_AtMo.create({
+            domElement: document.getElementById("example_addUserTap"),
+        })
+        document.getElementById("form_addUserTap").onsubmit = function(event){
+          const data = {
+            x: this.querySelector('[name="x"]').value,
+            y: this.querySelector('[name="y"]').value
+          };
+          const muted = this.querySelector('[name="muted"]').checked;
+
+          rm_addUserTap.addUserTap(data, muted);
+
+          return false;
+        };
+        
+      </script>
+
+      <h4 class="rm_atmo-daytime-color">Usage</h4>
+
+      <pre><code class="code_view language-javascript line-numbers" data-code="code_12"></code></pre>
+
+      <!-- setHours -->
+
+      <h3 class="rm_atmo-daytime-color">setHours</h3>
+
+      <div id="example_setHours" class="example" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;"></div>
+      <form id="form_setHours" style="border-top-left-radius: 0;border-top-right-radius: 0;margin-top:0;">
+        <div>
+          <label>Hour:</label>
+          <input name="hour" type="range" min="0" max="23" step="1" value="12" onchange="this.setAttribute('value', this.value)">
+        </div>
+        <input type="submit" value="Set Hour">
+      </form>
+
+      <script id="code_14" type="text/javascript">
+        let rm_setHours = rM_AtMo.create({
+            domElement: document.getElementById("example_setHours"),
+        })
+        document.getElementById("form_setHours").onsubmit = function(event){
+          const hour = this.querySelector('[name="hour"]').value;
+          rm_setHours.setHours(parseInt(hour));
+          return false;
+        };
+      </script>
+
+      <h4 class="rm_atmo-daytime-color">Usage</h4>
+
+      <pre><code class="code_view language-javascript line-numbers" data-code="code_14"></code></pre>
+
+      <!-- Mute/Unmut -->
+
+      <h3 class="rm_atmo-daytime-color">Mute/Unmute</h3>
+
+      <div id="example_mute" class="example" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;"></div>
+      <div style="border:1px solid #ccc; border-radius: 10px;padding:10px;border-top-left-radius: 0;border-top-right-radius: 0;margin-top:0;">
+        <button id="mute">Mute</button>  
+        <button id="unmute">Unmute</button>  
+      </div>
+
+      <script id="code_15" type="text/javascript">
+        let rm_mute = rM_AtMo.create({
+            domElement: document.getElementById("example_mute"),
+        })
+        document.getElementById("mute").addEventListener("click", function(event){
+          rm_mute.mute();
+          return false;
+        });
+        document.getElementById("unmute").addEventListener("click", function(event){
+          rm_mute.unMute();
+          return false;
+        });
+      </script>
+
+      <h4 class="rm_atmo-daytime-color">Usage</h4>
+
+      <pre><code class="code_view language-javascript line-numbers" data-code="code_15"></code></pre>
+
+
+    </article>
+    <footer>
+        <hr>
+        <br>
+        <i class="fas fa-code"></i> with <i class="fas fa-heart"></i> by Rene Müller
+        <br><br>
+        This is a private page without profits hosted by GitHub.com. 
+    </footer>
+  </main>
+
+  <div class="ribbon right black">
+    <a href="https://github.com/renmuell/rm_atmo">Fork me on GitHub</a>
+  </div>
+
+
+  <script>
+    var elements = document.getElementsByClassName("code_view");
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      element.innerHTML = document.getElementById(element.dataset.code).innerText;
+    }
+  </script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
+  <script type="text/javascript">
+    // Optional
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+      'remove-indent': true,
+    });
     </script>
+
 </body>
 </html>

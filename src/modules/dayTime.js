@@ -12,6 +12,11 @@
  * @author Rene Müller <rene.mueller.code@gmail.com>
  *****************************************************************************/
 
+/* modules */
+
+var CosmosControl = require('./cosmosControl');
+var DayTimeTypes = require('./dayTimeTypes');
+
 /**
  *  @param {HTMLElement} domElement - root element
  */
@@ -29,11 +34,15 @@ const DayTime = function (options){
      */
     colors: options.colors,
 
+    cosmosControl: undefined,
+
     /* HTMLElements for each daytime */
     $day       : document.createElement('div'), //  6 - 18
     $night     : document.createElement('div'), // 18 -  6 
     $morning   : document.createElement('div'), //  3 -  9 
     $afternoon : document.createElement('div'), // 15 - 21
+
+    currentSetHour: undefined,
 
     lastSetHour: -1,
 
@@ -55,23 +64,33 @@ const DayTime = function (options){
       dayTime.appendChild(dayTime.$morning   , dayTime.colors.morning)
       dayTime.appendChild(dayTime.$afternoon , dayTime.colors.afternoon)
 
-      var css = ".rm_atmo-day-color{color:"+dayTime.colors.day+"}";
-      css    += ".rm_atmo-day-background-color{background-color:"+dayTime.colors.day+"}"; 
+      if (options.renderCss) {
+        var css = ".rm_atmo-day-color{color:"+dayTime.colors.day+"}";
+        css    += ".rm_atmo-day-background-color{background-color:"+dayTime.colors.day+"}"; 
+        css    += ".rm_atmo-day-border-color{border-color:"+dayTime.colors.day+"}"; 
 
-      css    += ".rm_atmo-night-color{color:"+dayTime.colors.night+"}";
-      css    += ".rm_atmo-night-background-color{background-color:"+dayTime.colors.night+"}"; 
+        css    += ".rm_atmo-night-color{color:"+dayTime.colors.night+"}";
+        css    += ".rm_atmo-night-background-color{background-color:"+dayTime.colors.night+"}";
+        css    += ".rm_atmo-night-border-color{border-color:"+dayTime.colors.night+"}"; 
 
-      css    += ".rm_atmo-morning-color{color:"+dayTime.colors.morning+"}";
-      css    += ".rm_atmo-morning-background-color{background-color:"+dayTime.colors.morning+"}"; 
+        css    += ".rm_atmo-morning-color{color:"+dayTime.colors.morning+"}";
+        css    += ".rm_atmo-morning-background-color{background-color:"+dayTime.colors.morning+"}"; 
+        css    += ".rm_atmo-morning-border-color{border-color:"+dayTime.colors.morning+"}"; 
 
-      css    += ".rm_atmo-afternoon-color{color:"+dayTime.colors.afternoon+"}";
-      css    += ".rm_atmo-afternoon-background-color{background-color:"+dayTime.colors.afternoon+"}"; 
+        css    += ".rm_atmo-afternoon-color{color:"+dayTime.colors.afternoon+"}";
+        css    += ".rm_atmo-afternoon-background-color{background-color:"+dayTime.colors.afternoon+"}"; 
+        css    += ".rm_atmo-afternoon-border-color{border-color:"+dayTime.colors.afternoon+"}"; 
 
-      var style = document.createElement("style");
-      style.type = 'text/css';
-      style.id = "rm_atmo_static_styles";
-      style.appendChild(document.createTextNode(css));
-      document.head.appendChild(style);
+        var style = document.createElement("style");
+        style.type = 'text/css';
+        style.id = "rm_atmo_static_styles";
+        style.appendChild(document.createTextNode(css));
+        document.head.appendChild(style);
+      }
+
+      if (options.showCosmosControl) {
+        dayTime.addCosmosControl(dayTime.getHours());
+      }
     },
 
     /**
@@ -98,13 +117,35 @@ const DayTime = function (options){
       options.domElement.appendChild(child)
     },
 
+    setHours: hour => dayTime.currentSetHour = Number.isInteger(hour) ? Math.min(23, Math.max(0, Math.floor(hour))) : undefined,
+    setToLocalTime: () => dayTime.currentSetHour = undefined,
+    getHours:   () => typeof dayTime.currentSetHour === 'undefined' ? new Date().getHours() : dayTime.currentSetHour,
+
+    getDayTime: function () {
+      var hour = dayTime.getHours();
+      if      (hour >= 3  && hour <= 9)  return DayTimeTypes.MORNING;
+      else if (hour >= 15 && hour <= 21) return DayTimeTypes.AFTERNOON;
+      else if (hour >= 6  && hour <= 18) return DayTimeTypes.DAY;
+      else                               return DayTimeTypes.NIGHT;
+    },
+
+    addCosmosControl: function () {
+      dayTime.cosmosControl = CosmosControl(options);
+      dayTime.cosmosControl.createDom();
+      dayTime.cosmosControl.onUpdateDay(hour => dayTime.currentSetHour = hour);
+    },
+
     /**
      *  Entity update method to change daytime status.
      *
      *  @public
      */
     update: () => {
-      const hour = new Date().getHours()
+      const hour = dayTime.getHours()
+      
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.updateDay(hour);
+      }
 
       if (dayTime.lastSetHour != hour) {
 
@@ -113,36 +154,38 @@ const DayTime = function (options){
         dayTime.$morning.style.opacity   = (hour >= 3  && hour <= 9 ) ? (-0.1 * Math.pow(hour - 6 , 2)) + 1 : 0 
         dayTime.$afternoon.style.opacity = (hour >= 15 && hour <= 21) ? (-0.1 * Math.pow(hour - 18, 2)) + 1 : 0
 
-        var color;
+        if (options.renderCss) {
 
-        if (dayTime.$day.style.opacity > 0) {
-          if (dayTime.$morning.style.opacity > 0) {
-            color = calculateTransparentColor(
-              dayTime.$morning.dataset.color,
-              dayTime.$day.dataset.color,
-              dayTime.$morning.style.opacity);
+          var color;
+
+          if (dayTime.$day.style.opacity > 0) {
+            if (dayTime.$morning.style.opacity > 0) {
+              color = calculateTransparentColor(
+                dayTime.$morning.dataset.color,
+                dayTime.$day.dataset.color,
+                dayTime.$morning.style.opacity);
+            } else {
+              color = calculateTransparentColor(
+                dayTime.$afternoon.dataset.color,
+                dayTime.$day.dataset.color,
+                dayTime.$afternoon.style.opacity);
+            }
           } else {
-            color = calculateTransparentColor(
-              dayTime.$afternoon.dataset.color,
-              dayTime.$day.dataset.color,
-              dayTime.$afternoon.style.opacity);
+            if (dayTime.$morning.style.opacity > 0) {
+              color = calculateTransparentColor(
+                dayTime.$morning.dataset.color,
+                dayTime.$night.dataset.color,
+                dayTime.$morning.style.opacity);
+            } else {
+              color = calculateTransparentColor(
+                dayTime.$afternoon.dataset.color,
+                dayTime.$night.dataset.color,
+                dayTime.$afternoon.style.opacity);
+            }
           }
-        } else {
-          if (dayTime.$morning.style.opacity > 0) {
-            color = calculateTransparentColor(
-              dayTime.$morning.dataset.color,
-              dayTime.$night.dataset.color,
-              dayTime.$morning.style.opacity);
-          } else {
-            color = calculateTransparentColor(
-              dayTime.$afternoon.dataset.color,
-              dayTime.$night.dataset.color,
-              dayTime.$afternoon.style.opacity);
-          }
+          
+          dayTime.updateDynamicStyles(color);
         }
-        
-        dayTime.updateDynamicStyles(color);
-
         dayTime.lastSetHour = hour;
       }
     },
@@ -156,6 +199,7 @@ const DayTime = function (options){
 
       var css = ".rm_atmo-daytime-color{color:"+color+"}";
       css    += ".rm_atmo-daytime-background-color{background-color:"+color+"}"; 
+      css    += ".rm_atmo-daytime-border-color{border-color:"+color+"}";
 
       var style = document.createElement("style");
       style.type = 'text/css';

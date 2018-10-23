@@ -8,7 +8,6 @@
  *
  *  * volume is depended on y-position (top:low to bottom:loud)
  *  * pitch on x-position (left:low to right:high)
- *  * notes: 11-notes from g-major-scale start form G4
  *
  * @author Rene Müller <rene.mueller.code@gmail.com>
  *****************************************************************************/
@@ -17,26 +16,40 @@
 
 /* vendor */
 
-var ScaleMaker = require('../../node_modules/scale-maker/lib/node/scaleMaker.min');
+var ScaleMaker   = require('../../node_modules/scale-maker/lib/node/scaleMaker.min');
+var DayTimeTypes = require('./dayTimeTypes');
 
 // global statics
 window.AudioContext = window.AudioContext || window.webkitAudioContext
-const AudioContext  = new window.AudioContext()
-const noteLength    = 0.5
-const scale         = ScaleMaker.makeScale('major', 'G#4', 11)
+
+var AudioContext    = undefined;
+var MorningScale    = ScaleMaker.makeScale('chinesePentatonic', "A3" , 11);
+var AfternoonScale  = ScaleMaker.makeScale('kuomiPentatonic'  , "Bb3", 11);
+var DayScale        = ScaleMaker.makeScale('majorPentatonic'  , "G#3", 11);
+var NightScale      = ScaleMaker.makeScale('minorPentatonic'  , "F#3", 11);
+
+var last_audioContext_state = undefined
 
 /**
- *  @param {object} data - position data of user interaction
- *  @param {bool} muted - is user tap muted, true if yes
+ *  Factory for a new userTap instance.
+ * 
+ *  @param {object}       data             - position data of user interaction
+ *  @param {DayTimeTypes} dayTime          - the time of the day 
+ *  @param {bool}         muted            - is user tap muted, true if yes
+ *  @param {number}       volumeMultiplier - multiply volume, from 0 to 1
  */
-const UserTap = function  (data, muted = false){
+const UserTap = function  (
+  data, 
+  dayTime, 
+  muted = false, 
+  volumeMultiplier = 1
+){
 
   /* new instance */
 
   const userTap = {
 
     data        : data,
-
     death       : false,
     lifeTime    : 10,
     framesAlive : 0,
@@ -58,27 +71,41 @@ const UserTap = function  (data, muted = false){
      */
     playNote: () => {
 
-      const oscillator  = AudioContext.createOscillator(),
-            gainNode    = AudioContext.createGain(),
-            volume      = muted ? 0 : 0.10 * userTap.data.y,
-            time        = AudioContext.currentTime + noteLength,
-            noteInHertz = scale.inHertz[Math.floor(userTap.data.x * scale.inHertz.length)]
+      if (typeof AudioContext === "undefined") {
+        AudioContext = new window.AudioContext()
+      }
+
+      var noteLength  = 0.5,
+          scale       = getScale(dayTime),
+          oscillator  = AudioContext.createOscillator(),
+          gainNode    = AudioContext.createGain(),
+          volume      = muted ? 0 : Math.min(1, (0.10 * userTap.data.y) * Math.min(1, volumeMultiplier)),
+          time        = AudioContext.currentTime,
+          noteInHertz = scale.inHertz[Math.floor(userTap.data.x * scale.inHertz.length)]
 
       if (noteInHertz) {
 
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(noteInHertz, AudioContext.currentTime); // value in hertz
-
+        gainNode.gain.value = 0;
         gainNode.connect(AudioContext.destination);
         oscillator.connect(gainNode);
 
         oscillator.start(time);
         gainNode.gain.setValueAtTime(0, time); // initial
-
         gainNode.gain.linearRampToValueAtTime(volume, time + 0.5); // attack
         gainNode.gain.setValueAtTime(volume, time + noteLength - 0.5); // sustain
         gainNode.gain.linearRampToValueAtTime(0, time + noteLength + 0.5); // release
         oscillator.stop(time + noteLength + 0.5); // kill
+      }
+
+      if (AudioContext.state === 'suspended') {
+        if (last_audioContext_state === 'suspended') {
+          // now we know we can not play sound -> first firefox state is
+          // suspended, so at the second time, we know
+          console.log("not allowed!")
+        }
+        last_audioContext_state = AudioContext.state
       }
     },
 
@@ -133,7 +160,24 @@ const UserTap = function  (data, muted = false){
   
   userTap.init()
 
-  return userTap
+  return userTap;
+
+  /**
+   * Returns the scale for the daytime.
+   * 
+   * @param {DayTimeTypes} dayTime - the time of day.
+   * @return {object} - The scale for the daytime. 
+   */
+  function getScale (dayTime) {
+    switch (dayTime) {
+      case DayTimeTypes.DAY       : { return DayScale;       }
+      case DayTimeTypes.NIGHT     : { return NightScale;     }
+      case DayTimeTypes.AFTERNOON : { return AfternoonScale; }
+      case DayTimeTypes.MORNING   : { return MorningScale;   }
+      default                     : { return DayScale;       }
+    }
+  }
+
 }
 
 module.exports =  UserTap

@@ -69,13 +69,12 @@ const EntityList = function  () {
      *
      *  @public
      *  @param {CanvasRenderingContext2D} context - canvas context
-     *  @param {number} height - canvas height
-     *  @param {number} width - canvas width
+     *  @param {object} data - custom data
      */
-    draw: (context, height, width) => {
+    draw: (context, data) => {
       entityList.entities.forEach(entity => {
         if (!entity.death){
-          entity.draw(context, height, width)         
+          entity.draw(context, data)         
         }
       })
     },

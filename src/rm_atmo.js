@@ -51,11 +51,13 @@
         domElement: document.body,
         songSrc: undefined,
         muted: false,
+        showCosmosControl: false,
+        renderCss: false,
         colors: {
           day: '#00ADFF',
           night: '#3F2850',
-          morning: '#7D8DF9',
-          afternoon: '#E883E5'
+          morning: '#E883E5',
+          afternoon: '#7D8DF9'
         }
       }, options)
 
@@ -106,6 +108,27 @@
         muted: options.muted,
 
         /**
+         *  Time between each UserTab.
+         *  @type number
+         *  @private
+         */
+        timeBetweenUserTabs: 50,
+
+        /**
+         *  Max time added to timeBetweenUserTabs.
+         *  @type number
+         *  @private
+         */
+        maxOffsetBetweenUserTabs: 200,
+
+        /**
+         *  Times of last UserTab.
+         *  @type object
+         *  @private
+         */
+        lastUserTabTimes: {},
+
+        /**
          *  cEngine Instance - Canvas Engine Object
          *  @see https://github.com/renmuell/cEngine
          *  @private
@@ -117,12 +140,12 @@
           /* set resolution  */
           height: 512,
           /* redraw true */
-          autoClear: true,
+          autoClear: false,
           /* add cEgnine Plug-Ins */
           plugins: {
             /* frame-rate limiter */
             frameRate: cEngine.frameRate.create({
-              fps: 10
+              fps: 60
             }),
             /* canvas resize to full root element size */
             fill: cEngine.fill.create({
@@ -130,33 +153,86 @@
               aspectRetion: true
             }),
             /* user interaction (desktop and mobile) */
-            /* -> create new UserTap (music note) and fire event */
             input: cEngine.input.create({
-              onTouch: (ev) => {
-                const data = {
-                  x: ev.x/options.domElement.scrollWidth,
-                  y: ev.y/options.domElement.scrollHeight
-                }
-                rM_AtMo.entityList.add(UserTab(data, rM_AtMo.muted)) 
-                rM_AtMo.emitOnTap(data)
-              }
+
             })
           },
           /* add custom render step for cEngine  */
           /* -> background circle animation */
-          step: (context, height, width) => {
-            
-            if (rM_AtMo.frame % 55 == 0 || (rM_AtMo.frame < 10)) {
-              rM_AtMo.entityList.add(Circle(Math.random() * width, Math.random() * height))
+          step: (context, width, height, stepTimeElapsed, plugins) => {
+            if (rM_AtMo.frame % 6 == 0) {
+              
+              rM_AtMo.engine.clear();
+              
+              if (rM_AtMo.frame % 100 == 0 || (rM_AtMo.frame < 3)) {
+                rM_AtMo.entityList.add(Circle(Math.random() * width, Math.random() * height))
+              }
+              
+              rM_AtMo.entityList.update() 
+
+              context.shadowBlur = 24
+
+              rM_AtMo.entityList.draw(context, {
+                countTouches: plugins.input.touches.length
+              })
+        
             }
-            
-            rM_AtMo.dayTime.update()
-            rM_AtMo.entityList.update() 
 
-            context.shadowBlur = 24
-
-            rM_AtMo.entityList.draw(context, height, width)
             rM_AtMo.frame++;
+
+            plugins.input.touches.forEach(function(touch){
+                
+              var muted = true;
+              var showUserTab = false;
+              var volume = 0;
+
+              if ((typeof rM_AtMo.lastUserTabTimes[touch.identifier] === 'undefined')) {
+
+                showUserTab = true;
+                muted = rM_AtMo.muted;
+                volume = 1;
+
+              } else if ((Date.now() - rM_AtMo.lastUserTabTimes[touch.identifier]) > (rM_AtMo.timeBetweenUserTabs+(Math.random()*rM_AtMo.maxOffsetBetweenUserTabs))) { // Add random offset, so each played note is not fixed length apart -> avoid ticking
+                showUserTab = true;
+
+                muted = rM_AtMo.muted;
+                // less chance for high notes in a row -> sounds better
+                volume = (Math.random()*Math.random()); // https://pixelero.wordpress.com/2008/04/24/various-functions-and-various-distributions-with-mathrandom/
+                
+                if (Math.random() > (1/plugins.input.touches)) {
+                  volume *= Math.random();
+                }
+
+                rM_AtMo.lastTimeNotePlayed = Date.now()
+              }
+
+              if (showUserTab) {
+                const data = {
+                  x: touch.x/options.domElement.offsetWidth,
+                  y: touch.y/options.domElement.offsetHeight
+                }
+                rM_AtMo.entityList.add(UserTab(data, rM_AtMo.dayTime.getDayTime(), muted, volume));
+                rM_AtMo.emitOnTap(data);
+                rM_AtMo.lastUserTabTimes[touch.identifier] = Date.now()
+              }
+            })
+  
+            for (var identifier in rM_AtMo.lastUserTabTimes) {
+              if (rM_AtMo.lastUserTabTimes.hasOwnProperty(identifier)) {
+                var found = false;
+                for (let i = 0; i < plugins.input.touches.length; i++) {
+                  if (plugins.input.touches[i].identifier == identifier) {
+                    found = true;
+                    break;
+                  }
+                }
+                if (!found) {
+                  rM_AtMo.lastUserTabTimes[identifier] = undefined;
+                }
+              }
+            }
+
+            rM_AtMo.dayTime.update()
           }
         }),
 
@@ -168,15 +244,36 @@
          *  @private
          */
         init: () => {
-          setTimeout(function(){
-            
+ 
             if (rM_AtMo.song) {
               rM_AtMo.song.init()
             }
 
             rM_AtMo.engine.start()
 
-          }, 500)
+        },
+
+        /**
+         *  Fires all callbacks for onTap-Event
+         *
+         *  @private
+         *  @param {object} data - event data for all callbacks
+         */
+        emitOnTap: (data) => {
+          rM_AtMo.callbacks.forEach(c => c(data))
+        }
+      }
+
+      rM_AtMo.init()
+
+      return {
+
+        mute: () => {
+          rM_AtMo.muted = true
+        },
+
+        unMute: () => {
+          rM_AtMo.muted = false
         },
 
         /**
@@ -199,23 +296,17 @@
          *  @param {bool} muted - is user tap muted, true if yes, is overruled if rm_atmo is muted.
          */
         addUserTap: (data, muted = false) => {
-          rM_AtMo.entityList.add(UserTab(data, rM_AtMo.muted || muted))
+          rM_AtMo.entityList.add(UserTab(data, rM_AtMo.dayTime.getDayTime(), rM_AtMo.muted || muted))
         },
 
-        /**
-         *  Fires all callbacks for onTap-Event
-         *
-         *  @private
-         *  @param {object} data - event data for all callbacks
-         */
-        emitOnTap: (data) => {
-          rM_AtMo.callbacks.forEach(c => c(data))
+        setHours: hour => {
+          rM_AtMo.dayTime.setHours(hour)
+        },
+    
+        setToLocalTime: () => {
+          rM_AtMo.dayTime.setToLocalTime()
         }
       }
-
-      rM_AtMo.init()
-
-      return rM_AtMo
     }
   }
 
