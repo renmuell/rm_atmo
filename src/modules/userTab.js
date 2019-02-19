@@ -51,8 +51,8 @@ const UserTap = function  (
 
     data        : data,
     death       : false,
-    lifeTime    : 10,
-    framesAlive : 0,
+    lifeTime    : 1000, // in ms
+    timeAlive   : 0,
 
     /**
      *  Initialize userTab instance
@@ -113,9 +113,11 @@ const UserTap = function  (
      *  Entity update method to change status.
      *
      *  @public
+     *  @parm {int} stepTimeElapsed - time elapsed since last step
      */
-    update: () => {
-      userTap.death = ++userTap.framesAlive > userTap.lifeTime
+    update: (stepTimeElapsed) => {
+      userTap.timeAlive += stepTimeElapsed
+      userTap.death = userTap.timeAlive > userTap.lifeTime
     },
 
     /**
@@ -126,7 +128,7 @@ const UserTap = function  (
      */
     draw: (context) => {
 
-      const lifePercent = (userTap.lifeTime - userTap.framesAlive) / userTap.lifeTime 
+      const lifePercent = (userTap.lifeTime - userTap.timeAlive) / userTap.lifeTime 
 
       context.beginPath()
 
@@ -150,7 +152,7 @@ const UserTap = function  (
         0, 
         2 * Math.PI)
 
-      context.lineWidth = ((Math.random() - 0.5) * userTap.framesAlive)
+      context.lineWidth = ((Math.random() - 0.5) * (userTap.timeAlive/100))
 
       context.shadowColor = context.strokeStyle = 'rgba(255, 255, 255, ' + Math.random() * lifePercent + ')'
 

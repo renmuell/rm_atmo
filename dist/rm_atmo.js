@@ -76,7 +76,7 @@ module.exports = {
 };
 
 },{}],2:[function(require,module,exports){
-!function e(n,t,i){function o(r,a){if(!t[r]){if(!n[r]){var u="function"==typeof require&&require;if(!a&&u)return u(r,!0);if(s)return s(r,!0);throw new Error("Cannot find module '"+r+"'")}var c=t[r]={exports:{}};n[r][0].call(c.exports,function(e){var t=n[r][1][e];return o(t?t:e)},c,c.exports,e,n,t,i)}return t[r].exports}for(var s="function"==typeof require&&require,r=0;r<i.length;r++)o(i[r]);return o}({1:[function(e,n,t){"use strict";e("./vendors/polyfils"),function(e){var n={version:"0.1.12",create:function(e){var n={stepTimeThen:0,stepTimeNow:0,stepTimeElapsed:0,isRunning:!1,canvas:void 0,context:void 0,pluginList:[],requestAnimationFrameId:void 0,init:function(){n.createDomElement(),n.createPluginList(),n.callPlugins("init",[n])},start:function(){n.isRunning=!0,n.stepTimeElapsed=0,n.stepTimeNow=0,n.stepTimeThen=0,n.callPlugins("start"),n.loop()},stop:function(){n.isRunning=!1,n.stepTimeElapsed=0,n.stepTimeNow=0,n.stepTimeThen=0,n.requestAnimationFrameId&&window.cancelAnimationFrame(n.requestAnimationFrameId),n.callPlugins("stop")},stepFn:function(){n.stepTimeNow=(new Date).getTime(),0!==n.stepTimeThen&&(n.stepTimeElapsed=n.stepTimeNow-n.stepTimeThen),n.autoClear&&n.clear(),n.callPlugins("preStep",[n.context,n.canvas.width,n.canvas.height,n.stepTimeElapsed]),n.step.call(t,n.context,n.canvas.width,n.canvas.height,n.stepTimeElapsed,n.plugins),n.callPlugins("postStep",[n.context,n.canvas.width,n.canvas.height,n.stepTimeElapsed]),n.stepTimeThen=n.stepTimeNow},clear:function(){n.context.clearRect(0,0,n.canvas.width,n.canvas.height)},loop:function(){n.isRunning&&(n.stepFn(),n.requestAnimationFrameId=window.requestAnimationFrame(n.loop))},createDomElement:function(){n.canvas=document.createElement("canvas"),n.domElement.appendChild(n.canvas),n.context=n.canvas.getContext("2d"),n.style&&n.setStyle(n.style),n.resizeTo(n.width||n.canvas.width,n.height||n.canvas.height)},destroy:function(){n.callPlugins("destroy"),n.canvas.remove()},setStyle:function(e){for(var t in e)n.canvas.style[t]=e[t]},resizeTo:function(e,t){n.width=n.canvas.width=e,n.height=n.canvas.height=t},callPlugins:function(e,t){n.pluginList.forEach(function(n){n[e]&&n[e].apply(void 0,t)})},createPluginList:function(){for(var e in n.plugins)n.plugins.hasOwnProperty(e)&&"undefined"!=typeof n.plugins[e]&&"undefined"!=typeof n.plugins[e].cEnginePlugin&&n.pluginList.push(n.plugins[e])}};Object.assign(n,{domElement:document.body,autoClear:!1,step:void 0,width:void 0,height:void 0,style:void 0,plugins:{}},e),n.init();var t={plugins:n.plugins,stop:function(){return n.stop(),t},step:function(e){return e&&e>1?(n.stepFn(),t.step(--e)):(n.stepFn(),t)},start:function(){return n.start(),t},clear:function(){return n.clear(),t},destroy:function(){n.stop(),n.destroy(),n=void 0}};return t},extend:function(e,t){if("undefined"==typeof e||"undefined"==typeof t)throw new Error("id or plugin is undefined!");if(""===e)throw new Error("id is empty!");if(n[e])throw new Error("skiped cEngine-plugin ["+e+']. Maybe already attached or uses intern blocked name like "create", "extend" or "version"!');if("undefined"==typeof t.create)throw new Error("plugin has no create function!");n[e]=t}};e.cEngine=n}("undefined"!=typeof window?window:void 0)},{"./vendors/polyfils":2}],2:[function(e,n,t){"function"!=typeof Object.assign&&!function(){Object.assign=function(e){"use strict";if(void 0===e||null===e)throw new TypeError("Cannot convert undefined or null to object");for(var n=Object(e),t=1;t<arguments.length;t++){var i=arguments[t];if(void 0!==i&&null!==i)for(var o in i)i.hasOwnProperty(o)&&(n[o]=i[o])}return n}}()},{}]},{},[1]);
+!function e(n,t,i){function o(r,a){if(!t[r]){if(!n[r]){var u="function"==typeof require&&require;if(!a&&u)return u(r,!0);if(s)return s(r,!0);throw new Error("Cannot find module '"+r+"'")}var c=t[r]={exports:{}};n[r][0].call(c.exports,function(e){var t=n[r][1][e];return o(t?t:e)},c,c.exports,e,n,t,i)}return t[r].exports}for(var s="function"==typeof require&&require,r=0;r<i.length;r++)o(i[r]);return o}({1:[function(e,n,t){"use strict";e("./vendors/polyfils"),function(e){var n={version:"0.1.13",create:function(e){var n={stepTimeThen:0,stepTimeNow:0,stepTimeElapsed:0,isRunning:!1,canvas:void 0,context:void 0,pluginList:[],requestAnimationFrameId:void 0,init:function(){n.createDomElement(),n.createPluginList(),n.callPlugins("init",[n])},start:function(){n.isRunning=!0,n.stepTimeElapsed=0,n.stepTimeNow=0,n.stepTimeThen=0,n.callPlugins("start"),n.loop()},stop:function(){n.isRunning=!1,n.stepTimeElapsed=0,n.stepTimeNow=0,n.stepTimeThen=0,n.requestAnimationFrameId&&window.cancelAnimationFrame(n.requestAnimationFrameId),n.callPlugins("stop")},stepFn:function(){n.stepTimeNow=(new Date).getTime(),0!==n.stepTimeThen&&(n.stepTimeElapsed=n.stepTimeNow-n.stepTimeThen),n.autoClear&&n.clear(),n.callPlugins("preStep",[n.context,n.canvas.width,n.canvas.height,n.stepTimeElapsed]),n.step.call(t,n.context,n.canvas.width,n.canvas.height,n.stepTimeElapsed,n.plugins),n.callPlugins("postStep",[n.context,n.canvas.width,n.canvas.height,n.stepTimeElapsed]),n.stepTimeThen=n.stepTimeNow},clear:function(){n.context.clearRect(0,0,n.canvas.width,n.canvas.height)},loop:function(){n.isRunning&&(n.stepFn(),n.requestAnimationFrameId=window.requestAnimationFrame(n.loop))},createDomElement:function(){n.canvas=document.createElement("canvas"),n.domElement.appendChild(n.canvas),n.context=n.canvas.getContext("2d"),n.style&&n.setStyle(n.style),n.resizeTo(n.width||n.canvas.width,n.height||n.canvas.height)},destroy:function(){n.callPlugins("destroy"),n.canvas.remove()},setStyle:function(e){for(var t in e)n.canvas.style[t]=e[t]},resizeTo:function(e,t){n.width=n.canvas.width=e,n.height=n.canvas.height=t},callPlugins:function(e,t){n.pluginList.forEach(function(n){n[e]&&n[e].apply(void 0,t)})},createPluginList:function(){for(var e in n.plugins)n.plugins.hasOwnProperty(e)&&"undefined"!=typeof n.plugins[e]&&"undefined"!=typeof n.plugins[e].cEnginePlugin&&n.pluginList.push(n.plugins[e])}};Object.assign(n,{domElement:document.body,autoClear:!1,step:void 0,width:void 0,height:void 0,style:void 0,plugins:{}},e),n.init();var t={plugins:n.plugins,stop:function(){return n.stop(),t},step:function(e){return e&&e>1?(n.stepFn(),t.step(--e)):(n.stepFn(),t)},start:function(){return n.start(),t},clear:function(){return n.clear(),t},destroy:function(){n.stop(),n.destroy(),n=void 0}};return t},extend:function(e,t){if("undefined"==typeof e||"undefined"==typeof t)throw new Error("id or plugin is undefined!");if(""===e)throw new Error("id is empty!");if(n[e])throw new Error("skiped cEngine-plugin ["+e+']. Maybe already attached or uses intern blocked name like "create", "extend" or "version"!');if("undefined"==typeof t.create)throw new Error("plugin has no create function!");n[e]=t}};e.cEngine=n}("undefined"!=typeof window?window:void 0)},{"./vendors/polyfils":2}],2:[function(e,n,t){"function"!=typeof Object.assign&&!function(){Object.assign=function(e){"use strict";if(void 0===e||null===e)throw new TypeError("Cannot convert undefined or null to object");for(var n=Object(e),t=1;t<arguments.length;t++){var i=arguments[t];if(void 0!==i&&null!==i)for(var o in i)i.hasOwnProperty(o)&&(n[o]=i[o])}return n}}()},{}]},{},[1]);
 
 
 },{}],3:[function(require,module,exports){
@@ -88,7 +88,7 @@ module.exports = {
 
 
 },{}],5:[function(require,module,exports){
-!function e(n,o,t){function i(r,c){if(!o[r]){if(!n[r]){var d="function"==typeof require&&require;if(!c&&d)return d(r,!0);if(u)return u(r,!0);throw new Error("Cannot find module '"+r+"'")}var s=o[r]={exports:{}};n[r][0].call(s.exports,function(e){var o=n[r][1][e];return i(o?o:e)},s,s.exports,e,n,o,t)}return o[r].exports}for(var u="function"==typeof require&&require,r=0;r<t.length;r++)i(t[r]);return i}({1:[function(e,n,o){"use strict";!function(e){var n="MOUSE_LEFT_TOUCH",o={create:function(e){e=e||{};var t={cEnginePlugin:{name:"inputPlugin",version:"0.0.7"},engine:void 0,keys:{},touches:[],init:function(e){t.engine=e,t.engine.canvas.addEventListener("touchstart",t.touchstart),window.document.addEventListener("touchmove",t.touchmove),window.document.addEventListener("touchend",t.touchend),window.document.addEventListener("touchcancel",t.touchend),t.engine.canvas.addEventListener("mousedown",t.mousedown),window.document.addEventListener("mousemove",t.mousemove),window.document.addEventListener("mouseup",t.mouseup),window.document.addEventListener("keydown",t.onKeydown),window.document.addEventListener("keyup",t.onKeyup)},destroy:function(){t.engine.canvas.removeEventListener("touchstart",t.touchstart),window.document.removeEventListener("touchmove",t.touchmove),window.document.removeEventListener("touchend",t.touchend),window.document.removeEventListener("touchcancel",t.touchend),t.engine.canvas.removeEventListener("mousedown",t.mousedown),window.document.removeEventListener("mousemove",t.mousemove),window.document.removeEventListener("mouseup",t.mouseup),window.document.removeEventListener("keydown",t.onKeydown),window.document.removeEventListener("keyup",t.onKeyup)},mousedown:function(e){1==e.which&&(e.preventDefault(),t.mouseIsTouching=!0,e.identifier=n,t.touches.push(t.createTouch(e)))},mousemove:function(e){if(1==e.which&&(e.preventDefault(),t.mouseIsTouching)){e.identifier=n;var o=t.ongoingTouchIndexById(e.identifier);o>=0&&t.touches.splice(o,1,t.createTouch(e))}},mouseup:function(e){if(1==e.which){e.preventDefault(),t.mouseIsTouching=!1,e.identifier=n;var o=t.ongoingTouchIndexById(e.identifier);o>=0&&t.touches.splice(o,1)}},touchstart:function(e){e.preventDefault();for(var n=e.changedTouches,o=0;o<n.length;o++)t.touches.push(t.createTouch(n[o]))},touchmove:function(e){e.preventDefault();for(var n=e.changedTouches,o=0;o<n.length;o++){var i=t.ongoingTouchIndexById(n[o].identifier);i>=0&&t.touches.splice(i,1,t.createTouch(n[o]))}},touchend:function(e){e.preventDefault();for(var n=e.changedTouches,o=0;o<n.length;o++){var i=t.ongoingTouchIndexById(n[o].identifier);i>=0&&t.touches.splice(i,1)}},ongoingTouchIndexById:function(e){for(var n=0;n<t.touches.length;n++){var o=t.touches[n].identifier;if(o==e)return n}return-1},onKeydown:function(e){t.keys[o.KeyCode[e.keyCode]]=!0},onKeyup:function(e){t.keys[o.KeyCode[e.keyCode]]=!1},createTouch:function(e){var n=t.engine.canvas.getBoundingClientRect(),o={identifier:e.identifier,x:e.clientX-n.left,y:e.clientY-n.top};return t.engine.useResolutionDevider&&(o.x=o.x/t.engine.resolutionDevider,o.y=o.y/t.engine.resolutionDevider),o}};return t},KeyCode:{27:"ESC",32:"SPACE",37:"LEFT",38:"UP",39:"RIGHT",40:"DOWN",65:"A",66:"B",67:"C",68:"D",69:"E",70:"F",71:"G",72:"H",73:"I",74:"J",75:"K",76:"L",77:"M",78:"N",79:"O",80:"P",81:"Q",82:"R",83:"S",84:"T",85:"U",86:"V",87:"W",88:"X",89:"Y",90:"Z"}};e.extend("input",o)}(cEngine)},{}]},{},[1]);
+!function e(n,o,t){function i(r,c){if(!o[r]){if(!n[r]){var d="function"==typeof require&&require;if(!c&&d)return d(r,!0);if(u)return u(r,!0);throw new Error("Cannot find module '"+r+"'")}var s=o[r]={exports:{}};n[r][0].call(s.exports,function(e){var o=n[r][1][e];return i(o?o:e)},s,s.exports,e,n,o,t)}return o[r].exports}for(var u="function"==typeof require&&require,r=0;r<t.length;r++)i(t[r]);return i}({1:[function(e,n,o){"use strict";!function(e){var n="MOUSE_LEFT_TOUCH",o={create:function(e){e=e||{};var t={cEnginePlugin:{name:"inputPlugin",version:"0.0.8"},engine:void 0,keys:{},touches:[],init:function(e){t.engine=e,"ontouchstart"in window?(t.engine.canvas.addEventListener("touchstart",t.touchstart),window.document.addEventListener("touchmove",t.touchmove),window.document.addEventListener("touchend",t.touchend),window.document.addEventListener("touchcancel",t.touchend)):(t.engine.canvas.addEventListener("mousedown",t.mousedown),window.document.addEventListener("mousemove",t.mousemove),window.document.addEventListener("mouseup",t.mouseup)),window.document.addEventListener("keydown",t.onKeydown),window.document.addEventListener("keyup",t.onKeyup)},destroy:function(){t.engine.canvas.removeEventListener("touchstart",t.touchstart),window.document.removeEventListener("touchmove",t.touchmove),window.document.removeEventListener("touchend",t.touchend),window.document.removeEventListener("touchcancel",t.touchend),t.engine.canvas.removeEventListener("mousedown",t.mousedown),window.document.removeEventListener("mousemove",t.mousemove),window.document.removeEventListener("mouseup",t.mouseup),window.document.removeEventListener("keydown",t.onKeydown),window.document.removeEventListener("keyup",t.onKeyup)},mousedown:function(e){1==e.which&&(e.preventDefault(),t.mouseIsTouching=!0,e.identifier=n,t.touches.push(t.createTouch(e)))},mousemove:function(e){if(1==e.which&&(e.preventDefault(),t.mouseIsTouching)){e.identifier=n;var o=t.ongoingTouchIndexById(e.identifier);o>=0&&t.touches.splice(o,1,t.createTouch(e))}},mouseup:function(e){if(1==e.which){e.preventDefault(),t.mouseIsTouching=!1,e.identifier=n;var o=t.ongoingTouchIndexById(e.identifier);o>=0&&t.touches.splice(o,1)}},touchstart:function(e){for(var n=e.changedTouches,o=0;o<n.length;o++)t.touches.push(t.createTouch(n[o]))},touchmove:function(e){for(var n=e.changedTouches,o=0;o<n.length;o++){var i=t.ongoingTouchIndexById(n[o].identifier);i>=0&&t.touches.splice(i,1,t.createTouch(n[o]))}},touchend:function(e){for(var n=e.changedTouches,o=0;o<n.length;o++){var i=t.ongoingTouchIndexById(n[o].identifier);i>=0&&t.touches.splice(i,1)}},ongoingTouchIndexById:function(e){for(var n=0;n<t.touches.length;n++){var o=t.touches[n].identifier;if(o==e)return n}return-1},onKeydown:function(e){t.keys[o.KeyCode[e.keyCode]]=!0},onKeyup:function(e){t.keys[o.KeyCode[e.keyCode]]=!1},createTouch:function(e){var n=t.engine.canvas.getBoundingClientRect(),o={identifier:e.identifier,x:e.clientX-n.left,y:e.clientY-n.top};return t.engine.useResolutionDevider&&(o.x=o.x/t.engine.resolutionDevider,o.y=o.y/t.engine.resolutionDevider),o}};return t},KeyCode:{27:"ESC",32:"SPACE",37:"LEFT",38:"UP",39:"RIGHT",40:"DOWN",65:"A",66:"B",67:"C",68:"D",69:"E",70:"F",71:"G",72:"H",73:"I",74:"J",75:"K",76:"L",77:"M",78:"N",79:"O",80:"P",81:"Q",82:"R",83:"S",84:"T",85:"U",86:"V",87:"W",88:"X",89:"Y",90:"Z"}};e.extend("input",o)}(cEngine)},{}]},{},[1]);
 
 
 },{}],6:[function(require,module,exports){
@@ -168,34 +168,39 @@ const Circle = function (x, y){
     x           : x, 
     y           : y, 
     radius      : 100 * Math.random(), 
+    lineWidth   : 0,
+    lastLineUpdate: 0,
 
     /* stroke start and end angle */
     startAngle  : Math.random() * (2 * Math.PI), 
     endAngle    : ((Math.random() * (2 * Math.PI)) + Math.random() * 10) % (2 * Math.PI),
     
-    /* the rate of change, each step */
-    startAngleChange : Math.random()/10,
-    endAngleChange   : (Math.random()/10) * 2,
+    /* the rate of change, each step, in ms */
+    startAngleChange : Math.random()/2000,
+    endAngleChange   : (Math.random()/2000) * 2,
 
     death       : false,
-    lifeTime    : 500 * Math.random(),
+    // in ms
+    lifeTime    : 50000 * Math.random(),
 
     /* how long alive */
-    framesAlive : 0, 
+    timeAlive:0,
 
     /**
      *  Entity update method to change status and appearance.
      *
      *  @public
+     *  @parm {int} stepTimeElapsed - time elapsed since last step
      */
-    update: () => {
-      circle.startAngle = (circle.startAngle + circle.startAngleChange) % (2 * Math.PI)
-      circle.endAngle   = (circle.endAngle   + circle.endAngleChange)   % (2 * Math.PI)
+    update: (stepTimeElapsed) => {
+      circle.startAngle = (circle.startAngle + (circle.startAngleChange*stepTimeElapsed)) % (2 * Math.PI)
+      circle.endAngle   = (circle.endAngle   + (circle.endAngleChange*stepTimeElapsed))   % (2 * Math.PI)
 
-      circle.x         += (Math.random() - 0.5)
-      circle.y         -= (Math.random() - 0.5)
+      circle.x         += ((Math.random() - 0.5)/100)*stepTimeElapsed
+      circle.y         -= ((Math.random() - 0.5)/100)*stepTimeElapsed
 
-      circle.death = ++circle.framesAlive > circle.lifeTime
+      circle.timeAlive += stepTimeElapsed
+      circle.death = circle.timeAlive > circle.lifeTime
     },
 
     /**
@@ -213,10 +218,16 @@ const Circle = function (x, y){
         circle.radius, 
         circle.startAngle, 
         circle.endAngle)
-        
-      context.lineWidth = Math.max(1, circle.framesAlive / 100) + ((Math.random() - 0.5) * (circle.framesAlive / 10))
       
-      context.shadowColor = context.strokeStyle = 'white'
+      if (circle.lastLineUpdate == 0 || circle.lastLineUpdate > 100) {
+        circle.lineWidth = Math.max(1, circle.timeAlive / 10000) + ((Math.random() - 0.5) * (circle.timeAlive / 1000))
+        circle.lastLineUpdate = 0
+      }
+      circle.lastLineUpdate += data.stepTimeElapsed
+
+      context.lineWidth = circle.lineWidth
+      
+      context.shadowColor = context.strokeStyle = 'rgba(255,255,255,0.7)'
 
       if (data.countTouches > 0 && Math.random() > 0.1) {
         context.shadowColor = context.strokeStyle = 'rgba(255,255,255,0.1)'
@@ -842,13 +853,14 @@ const EntityList = function  () {
      *  clear them.
      *
      *  @public
+     *  @parm {int} stepTimeElapsed - time elapsed since last step
      */
-    update: () => {
+    update: (stepTimeElapsed) => {
       entityList.entities.forEach(entity => {
 
         if (!entity.death) {
 
-          entity.update()
+          entity.update(stepTimeElapsed)
 
           if (entity.death) {
             entityList.numDeath++
@@ -955,8 +967,8 @@ const UserTap = function  (
 
     data        : data,
     death       : false,
-    lifeTime    : 10,
-    framesAlive : 0,
+    lifeTime    : 1000, // in ms
+    timeAlive   : 0,
 
     /**
      *  Initialize userTab instance
@@ -1017,9 +1029,11 @@ const UserTap = function  (
      *  Entity update method to change status.
      *
      *  @public
+     *  @parm {int} stepTimeElapsed - time elapsed since last step
      */
-    update: () => {
-      userTap.death = ++userTap.framesAlive > userTap.lifeTime
+    update: (stepTimeElapsed) => {
+      userTap.timeAlive += stepTimeElapsed
+      userTap.death = userTap.timeAlive > userTap.lifeTime
     },
 
     /**
@@ -1030,7 +1044,7 @@ const UserTap = function  (
      */
     draw: (context) => {
 
-      const lifePercent = (userTap.lifeTime - userTap.framesAlive) / userTap.lifeTime 
+      const lifePercent = (userTap.lifeTime - userTap.timeAlive) / userTap.lifeTime 
 
       context.beginPath()
 
@@ -1054,7 +1068,7 @@ const UserTap = function  (
         0, 
         2 * Math.PI)
 
-      context.lineWidth = ((Math.random() - 0.5) * userTap.framesAlive)
+      context.lineWidth = ((Math.random() - 0.5) * (userTap.timeAlive/100))
 
       context.shadowColor = context.strokeStyle = 'rgba(255, 255, 255, ' + Math.random() * lifePercent + ')'
 
@@ -1249,24 +1263,22 @@ module.exports =  UserTap
           /* add custom render step for cEngine  */
           /* -> background circle animation */
           step: (context, width, height, stepTimeElapsed, plugins) => {
-            if (rM_AtMo.frame % 6 == 0) {
-              
-              rM_AtMo.engine.clear();
-              
-              if (rM_AtMo.frame % 100 == 0 || (rM_AtMo.frame < 3)) {
-                rM_AtMo.entityList.add(Circle(Math.random() * width, Math.random() * height))
-              }
-              
-              rM_AtMo.entityList.update() 
-
-              context.shadowBlur = 24
-
-              rM_AtMo.entityList.draw(context, {
-                countTouches: plugins.input.touches.length
-              })
-        
+             
+            rM_AtMo.engine.clear();
+            
+            if (rM_AtMo.frame % 100 == 0 || (rM_AtMo.frame < 3)) {
+              rM_AtMo.entityList.add(Circle(Math.random() * width, Math.random() * height))
             }
+            
+            rM_AtMo.entityList.update(stepTimeElapsed) 
 
+            context.shadowBlur = 24
+
+            rM_AtMo.entityList.draw(context, {
+              countTouches: plugins.input.touches.length,
+              stepTimeElapsed: stepTimeElapsed
+            })
+        
             rM_AtMo.frame++;
 
             plugins.input.touches.forEach(function(touch){
@@ -1337,6 +1349,8 @@ module.exports =  UserTap
             if (rM_AtMo.song) {
               rM_AtMo.song.init()
             }
+
+            options.domElement.style.touchAction = "None"
 
             rM_AtMo.engine.start()
 

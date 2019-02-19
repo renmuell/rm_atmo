@@ -45,13 +45,14 @@ const EntityList = function  () {
      *  clear them.
      *
      *  @public
+     *  @parm {int} stepTimeElapsed - time elapsed since last step
      */
-    update: () => {
+    update: (stepTimeElapsed) => {
       entityList.entities.forEach(entity => {
 
         if (!entity.death) {
 
-          entity.update()
+          entity.update(stepTimeElapsed)
 
           if (entity.death) {
             entityList.numDeath++

@@ -160,24 +160,22 @@
           /* add custom render step for cEngine  */
           /* -> background circle animation */
           step: (context, width, height, stepTimeElapsed, plugins) => {
-            if (rM_AtMo.frame % 6 == 0) {
-              
-              rM_AtMo.engine.clear();
-              
-              if (rM_AtMo.frame % 100 == 0 || (rM_AtMo.frame < 3)) {
-                rM_AtMo.entityList.add(Circle(Math.random() * width, Math.random() * height))
-              }
-              
-              rM_AtMo.entityList.update() 
-
-              context.shadowBlur = 24
-
-              rM_AtMo.entityList.draw(context, {
-                countTouches: plugins.input.touches.length
-              })
-        
+             
+            rM_AtMo.engine.clear();
+            
+            if (rM_AtMo.frame % 100 == 0 || (rM_AtMo.frame < 3)) {
+              rM_AtMo.entityList.add(Circle(Math.random() * width, Math.random() * height))
             }
+            
+            rM_AtMo.entityList.update(stepTimeElapsed) 
 
+            context.shadowBlur = 24
+
+            rM_AtMo.entityList.draw(context, {
+              countTouches: plugins.input.touches.length,
+              stepTimeElapsed: stepTimeElapsed
+            })
+        
             rM_AtMo.frame++;
 
             plugins.input.touches.forEach(function(touch){
@@ -248,6 +246,8 @@
             if (rM_AtMo.song) {
               rM_AtMo.song.init()
             }
+
+            options.domElement.style.touchAction = "None"
 
             rM_AtMo.engine.start()
 

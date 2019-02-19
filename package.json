@@ -1,6 +1,6 @@
 {
   "name": "rm_atmo",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "background atmosphere interaction",
   "main": "dist/rm_atmo.js",
   "scripts": {
@@ -30,7 +30,7 @@
   "dependencies": {},
   "devDependencies": {
     "browserify-css": "^0.14.0",
-    "cengine": "^0.1.12",
+    "cengine": "^0.1.13",
     "scale-maker": "^0.2.2",
     "svg-browserify": "0.0.2"
   }
