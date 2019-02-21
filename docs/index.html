@@ -190,15 +190,30 @@
       </script>
 
       <!-- CosmosControl  -->
-
       <h3 class="rm_atmo-daytime-color">CosmosControl</h3>
 
-      <div id="example_2" class="example"></div>
+      <div id="example_2" class="example" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;"></div>
+      <div style="border:1px solid #ccc; border-radius: 10px;padding:10px;border-top-left-radius: 0;border-top-right-radius: 0;margin-top:0;">
+        <button id="showCosmosControl">Show</button>  
+        <button id="hideCosmosControl">Hide</button>  
+      </div>
+
+
       <script id="code_2" type="text/javascript">
-        rM_AtMo.create({
+        var rm_AtMo_CosmosControl = rM_AtMo.create({
             domElement: document.getElementById("example_2"),
-            showCosmosControl: true
+            enableCosmosControl: true
         })
+
+        document.getElementById("showCosmosControl").addEventListener("click", function(event){
+          rm_AtMo_CosmosControl.showCosmosControl();
+          return false;
+        });
+        document.getElementById("hideCosmosControl").addEventListener("click", function(event){
+          rm_AtMo_CosmosControl.hideCosmosControl();
+          return false;
+        });
+
       </script>
 
       <h4 class="rm_atmo-daytime-color">Usage</h4>
@@ -213,7 +228,7 @@
       <script id="code_3" type="text/javascript">
         rM_AtMo.create({
             domElement: document.getElementById("example_3"),
-            showCosmosControl: true,
+            enableCosmosControl: true,
             renderCss: true
         })
       </script>

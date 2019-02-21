@@ -30,6 +30,7 @@ const CosmosControl = function (options){
         rotation_speed: 0,
         
         onUpdateDayCallbacks: [],
+        onResetClickCallbacks: [],
 
         createDom: (hours) => {
 
@@ -50,6 +51,12 @@ const CosmosControl = function (options){
             cosmosControl.$moon_wrapper.innerHTML = cosmosControl.moonSvg;
             cosmosControl.$cosmosControl.appendChild(cosmosControl.$moon_wrapper);
 
+            cosmosControl.$reset = document.createElement("div");
+            cosmosControl.$reset.id = "reset";
+            cosmosControl.$reset.innerHTML = "Reset";
+            cosmosControl.$reset.classList.add("hide");
+            cosmosControl.$cosmosControl.appendChild(cosmosControl.$reset);
+
             cosmosControl.updateDay(hours);
         
             cosmosControl.addEventListeners();
@@ -67,6 +74,23 @@ const CosmosControl = function (options){
             window.document.addEventListener('touchend', cosmosControl.touchendEventHandler)
             window.document.addEventListener('touchcancel', cosmosControl.touchendEventHandler)
             window.addEventListener("resize", cosmosControl.windowResizeEventHandler);
+
+            cosmosControl.$reset.addEventListener("click", cosmosControl.reset_click_event_handler);
+        },
+
+        reset_click_event_handler: function () {
+            cosmosControl.hide_reset();
+            cosmosControl.rotation_speed = 0;
+            cosmosControl.emitResetClick();
+            cosmosControl.$reset.blur()
+        },
+
+        show_reset: function(){
+            cosmosControl.$reset.classList.remove("hide");
+        },
+
+        hide_reset: function(){
+            cosmosControl.$reset.classList.add("hide");
         },
 
         windowResizeEventHandler: function () {
@@ -132,6 +156,8 @@ const CosmosControl = function (options){
             cosmosControl.start_current_rotation = cosmosControl.current_rotation;
             
             cosmosControl.rotation_speed = 0;
+
+            cosmosControl.show_reset();
         },
         touchMove: function (clientX, clientY) {
             var boundingClientRect = options.domElement.getBoundingClientRect();
@@ -203,7 +229,7 @@ const CosmosControl = function (options){
 
         /* Update Handler */
 
-        updateDay: function(hour){
+        updateDay: function(hour, localTimeHour){
            
             if (!cosmosControl.isTouching) {
 
@@ -231,7 +257,14 @@ const CosmosControl = function (options){
                     cosmosControl.current_rotation = cosmosControl.convertHourToAngle(hour);
                 }
             }
-
+            /*
+            Calculate position of current time:
+            var localTimeHour_rotation = cosmosControl.convertHourToAngle(localTimeHour);
+            localTimeHour_rotation_diff = (cosmosControl.current_rotation - localTimeHour_rotation)%360;
+            var localTimeHour_rotation_x = cosmosControl.$cosmosControl.offsetWidth/2 * Math.cos((cosmosControl.current_rotation-localTimeHour_rotation_diff)*Math.PI/180);
+            var localTimeHour_rotation_y = cosmosControl.$cosmosControl.offsetWidth/2 * Math.sin((cosmosControl.current_rotation-localTimeHour_rotation_diff)*Math.PI/180);
+            */
+            
             cosmosControl.updateAngle();
         },
         updateAngle: function () {
@@ -247,6 +280,8 @@ const CosmosControl = function (options){
             } else {
                 cosmosControl.$moon_wrapper.style.transform = "translate(-50%,-50%) rotateZ(" + -cosmosControl.current_rotation + "deg)"; 
             }
+
+            cosmosControl.$reset.style.transform = "translate(-50%,-50%) rotateZ(" + -cosmosControl.current_rotation + "deg)"; 
         },
 
         convertAngleToHour: function (angle) {
@@ -269,6 +304,23 @@ const CosmosControl = function (options){
         emitUpdateDay:function(){
             var hour = cosmosControl.convertAngleToHour(cosmosControl.current_rotation);
             cosmosControl.onUpdateDayCallbacks.forEach(callback => callback(hour));
+        },
+
+        onResetClick: function (callback) {
+            cosmosControl.onResetClickCallbacks.push(callback);
+        },
+        emitResetClick: function () {
+            cosmosControl.onResetClickCallbacks.forEach(callback => callback());
+        },
+
+        /* Show/Hide */
+
+        hide: () => {
+            cosmosControl.$cosmosControl.classList.add('hide')
+        },
+
+        show: () => {
+            cosmosControl.$cosmosControl.classList.remove('hide')
         }
     }
 

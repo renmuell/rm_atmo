@@ -8,6 +8,14 @@
     transform: translate(-50%,50%);
     z-index: 1;
     pointer-events: none;
+    opacity: 1;
+    transition: bottom 1s ease-in-out, 
+                opacity 1s ease-in-out;
+}
+
+.cosmosControl.hide {
+    bottom: -100%;
+    opacity: 0;
 }
 
 .cosmosControl.active,
@@ -15,7 +23,8 @@
     border: 5px dashed rgba(255,255,255,.5);
 }
 
-svg {
+svg,
+#reset {
     touch-action: none;
     box-sizing: border-box;
     transition: padding .1s ease-in-out;
@@ -238,4 +247,24 @@ svg#sun #glow {
     100% {
         transform: translate(-50%, -52%)
     }
+}
+
+#reset {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 80px;
+    height: 80px;
+    line-height: 53px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.63);
+    color: white;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#reset.hide {
+    opacity: 0;
 }

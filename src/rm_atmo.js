@@ -51,7 +51,7 @@
         domElement: document.body,
         songSrc: undefined,
         muted: false,
-        showCosmosControl: false,
+        enableCosmosControl: false,
         renderCss: false,
         colors: {
           day: '#00ADFF',
@@ -305,6 +305,14 @@
     
         setToLocalTime: () => {
           rM_AtMo.dayTime.setToLocalTime()
+        },
+        
+        hideCosmosControl: () => {
+          rM_AtMo.dayTime.hideCosmosControl()
+        },
+
+        showCosmosControl: () => {
+          rM_AtMo.dayTime.showCosmosControl()
         }
       }
     }

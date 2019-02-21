@@ -88,7 +88,7 @@ const DayTime = function (options){
         document.head.appendChild(style);
       }
 
-      if (options.showCosmosControl) {
+      if (options.enableCosmosControl) {
         dayTime.addCosmosControl(dayTime.getHours());
       }
     },
@@ -117,9 +117,23 @@ const DayTime = function (options){
       options.domElement.appendChild(child)
     },
 
-    setHours: hour => dayTime.currentSetHour = Number.isInteger(hour) ? Math.min(23, Math.max(0, Math.floor(hour))) : undefined,
-    setToLocalTime: () => dayTime.currentSetHour = undefined,
-    getHours:   () => typeof dayTime.currentSetHour === 'undefined' ? new Date().getHours() : dayTime.currentSetHour,
+    setHours: function (hour) {
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.show_reset();
+      }
+      dayTime.currentSetHour = Number.isInteger(hour) ? Math.min(23, Math.max(0, Math.floor(hour))) : undefined;
+    },
+
+    setToLocalTime: function () {
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.hide_reset();
+      }
+      dayTime.currentSetHour = undefined
+    },
+    
+    getHours:         () => typeof dayTime.currentSetHour === 'undefined' ? dayTime.getLocalTimeHour() : dayTime.currentSetHour,
+    
+    getLocalTimeHour: () => new Date().getHours(),
 
     getDayTime: function () {
       var hour = dayTime.getHours();
@@ -133,7 +147,10 @@ const DayTime = function (options){
       dayTime.cosmosControl = CosmosControl(options);
       dayTime.cosmosControl.createDom();
       dayTime.cosmosControl.onUpdateDay(hour => dayTime.currentSetHour = hour);
+      dayTime.cosmosControl.onResetClick(() => { dayTime.setToLocalTime(); });
     },
+
+
 
     /**
      *  Entity update method to change daytime status.
@@ -144,7 +161,7 @@ const DayTime = function (options){
       const hour = dayTime.getHours()
       
       if (dayTime.cosmosControl) {
-        dayTime.cosmosControl.updateDay(hour);
+        dayTime.cosmosControl.updateDay(hour, dayTime.getLocalTimeHour());
       }
 
       if (dayTime.lastSetHour != hour) {
@@ -206,6 +223,18 @@ const DayTime = function (options){
       style.id = "rm_atmo_dynamic_styles";
       style.appendChild(document.createTextNode(css));
       document.head.appendChild(style);
+    },
+
+    hideCosmosControl: () => {
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.hide()
+      } 
+    },
+
+    showCosmosControl: () => {
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.show()
+      } 
     }
   }
 

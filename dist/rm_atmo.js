@@ -94,7 +94,7 @@ module.exports = {
 },{}],6:[function(require,module,exports){
 module.exports=function(){'use strict';function getNthRoot(value,n){return Math.pow(value,1/n)}function isValidNoteName(noteName){var validNameRegex=/^[A-G][b#]?[0-8]$/;return'string'==typeof noteName&&validNameRegex.test(noteName)}function isScaleTypeDefined(scaleName){return scaleDefs.hasOwnProperty(scaleName)}function isValidScaleName(scaleName){var scaleNameRegex=/^[A-Za-z\-\_ ]+$/;return'string'==typeof scaleName&&scaleNameRegex.test(scaleName)}function isValidScaleDefinition(scaleDef){return Array.isArray(scaleDef)&&scaleDef.every(isPositiveIntegerGreaterThanZero)}function isPositiveIntegerGreaterThanZero(value){return'number'==typeof value&&value%1===0&&value>0}function getNoteByInterval(reference,interval){var frequency=reference*Math.pow(TWELFTH_ROOT,interval);return frequency=frequency>MAX_FREQUENCY?MAX_FREQUENCY:frequency,frequency=MIN_FREQUENCY>frequency?MIN_FREQUENCY:frequency,Math.round(100*frequency)/100}function getCentsByInterval(interval){return interval*CENTS_PER_SEMITONE}function getIntervalFromA4(noteName,octave){var semitonesInOctave=12,A4Octave=4,intervalsRelativeToA={C:-9,D:-7,E:-5,F:-4,G:-2,A:0,B:2};return intervalsRelativeToA[noteName]+(octave-A4Octave)*semitonesInOctave}function getIntervalAdjustment(sharpOrFlat){var adjustments={'#':1,b:-1};return'#'!==sharpOrFlat&&'b'!==sharpOrFlat?0:adjustments[sharpOrFlat]}function getScaleNames(){var scaleName,scaleNames=[];for(scaleName in scaleDefs)scaleDefs.hasOwnProperty(scaleName)&&scaleNames.push(scaleName);return scaleNames}function getNote(noteString){if(!isValidNoteName(noteString))throw new Error('Invalid argument noteString: getNote(noteString) noteString should be a valid note name, eg. "Ab0", "C7"');var intervalFromA,adjustedInterval,noteNameMatch=noteString.match(/^[A-G]/g),sharpOrFlatMatch=noteString.match(/[b#]/g),octaveMatch=noteString.match(/[0-8]/g),noteName=noteNameMatch?noteNameMatch[0]:null,sharpOrFlat=sharpOrFlatMatch?sharpOrFlatMatch[0]:null,octave=octaveMatch?parseInt(octaveMatch[0],10):null;return intervalFromA=getIntervalFromA4(noteName,octave),adjustedInterval=intervalFromA+getIntervalAdjustment(sharpOrFlat),getNoteByInterval(REF_FREQUENCIES.A4,adjustedInterval)}function makeScale(scaleType,startNote,noteCount){if(arguments.length<3)throw new Error('Missing argument(s): makeScale() expects three arguments');if(!isValidScaleName(scaleType))throw new Error('Invalid argument scaleType: makeScale(scaleType, startNote, noteCount) expects scaleType to be a string consisting of lower or upper case letters (A-Z, a-z), spaces, hyphens(-) or underscores(_) only');if(!isScaleTypeDefined(scaleType))throw new Error('Scale type is undefined: makeScale(scaleType, startNote, noteCount) scale with name provided for scaleType is not defined – make sure you choose from available scale types');if(!isPositiveIntegerGreaterThanZero(noteCount))throw new Error('Invalid argument noteCount: makeScale(scaleType, startNote, noteCount) expects noteCount to be a positive integer greater than 0');if(!isValidNoteName(startNote))throw new Error('Invalid argument startNote: makeScale(scaleType, startNote, noteCount) startNote should be a valid note name, eg. "Ab0", "C7"');var i,scaleDef=scaleDefs[scaleType],scaleInHertz=[],scaleInCents=[],scaleInSemitones=[],intervalsFromStartNote=0,intervalCounter=0,startFrequency=getNote(startNote);for(scaleInHertz.push(startFrequency),scaleInCents.push(0),scaleInSemitones.push(0),i=0;noteCount-1>i;i+=1)intervalsFromStartNote+=scaleDef[intervalCounter],scaleInHertz.push(getNoteByInterval(startFrequency,intervalsFromStartNote)),scaleInCents.push(getCentsByInterval(intervalsFromStartNote)),scaleInSemitones.push(intervalsFromStartNote),intervalCounter=intervalCounter===scaleDef.length-1?0:intervalCounter+1;return{startNote:startFrequency,inHertz:scaleInHertz,inCents:scaleInCents,inSemiTones:scaleInSemitones}}function addScale(name,scaleDef){if(arguments.length<2)throw new Error('Missing argument(s): addScale() expects two arguments');if(!isValidScaleName(name))throw new Error('Invalid argument name: addScale(name, scaleDef) expects name to be a string consisting of lower or upper case letters (A-Z, a-z), spaces, hyphens(-) or underscores(_) only');if(isScaleTypeDefined(name))throw new Error('Scale type already defined: addScale(name, scaleDef) scale with value of name argument is already defined – make sure you choose a scale name not already in use');if(!isValidScaleDefinition(scaleDef))throw new Error('Invalid argument scaleDef: addScale(name, scaleDef) expects scaleDef to be an array of only positive integers greater than 0');scaleDefs[name]=scaleDef}var TWELFTH_ROOT=getNthRoot(2,12),REF_FREQUENCIES={A4:440,C0:16.35,B8:7902.13},MIN_FREQUENCY=REF_FREQUENCIES.C0,MAX_FREQUENCY=REF_FREQUENCIES.B8,CENTS_PER_SEMITONE=100,scaleDefs={};return scaleDefs.chromatic=[1],scaleDefs.wholeTone=[2],scaleDefs.major=[2,2,1,2,2,2,1],scaleDefs.majorPentatonic=[2,2,3,2,3],scaleDefs.minorPentatonic=[3,2,2,3,2],scaleDefs.kuomiPentatonic=[1,4,2,1,4],scaleDefs.chinesePentatonic=[4,2,1,4,1],scaleDefs.naturalMinor=[2,1,2,2,1,2,2],scaleDefs.harmonicMinor=[2,1,2,2,1,3,1],scaleDefs.melodicMinor=[2,1,2,2,2,2,1],{makeScale:makeScale,getNote:getNote,addScale:addScale,getScaleNames:getScaleNames,test:{getIntervalFromA4:getIntervalFromA4,getIntervalAdjustment:getIntervalAdjustment,getCentsByInterval:getCentsByInterval,getNoteByInterval:getNoteByInterval,isValidNoteName:isValidNoteName,isValidScaleName:isValidScaleName,isValidScaleDefinition:isValidScaleDefinition,isPositiveIntegerGreaterThanZero:isPositiveIntegerGreaterThanZero,isScaleTypeDefined:isScaleTypeDefined}}}();
 },{}],7:[function(require,module,exports){
-var css = ".cosmosControl {\n  touch-action: none;\n  position: absolute;\n  border: 5px dashed transparent;\n  bottom: 0;\n  border-radius: 50%;\n  left: 50%;\n  transform: translate(-50%,50%);\n  z-index: 1;\n  pointer-events: none;\n}\n.cosmosControl.active,\n.cosmosControl:active {\n  border: 5px dashed rgba(255,255,255,.5);\n}\nsvg {\n  touch-action: none;\n  box-sizing: border-box;\n  transition: padding .1s ease-in-out;\n  cursor: pointer;\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Safari */\n  -khtml-user-select: none;\n  /* Konqueror HTML */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                supported by Chrome and Opera */\n  pointer-events: all;\n}\nsvg.active,\nsvg:active {\n  padding: 10px;\n  cursor: pointer;\n  cursor: -webkit-grabbing;\n}\nsvg#moon #superHappyFace {\n  display: none !important;\n}\nsvg#moon.active #superHappyFace,\nsvg#moon:active #superHappyFace {\n  display: inline !important;\n}\nsvg#moon.active #happyFace,\nsvg#moon:active #happyFace {\n  display: none !important;\n}\nsvg#sun #superHappyFace {\n  display: none !important;\n}\nsvg#sun.active #superHappyFace,\nsvg#sun:active #superHappyFace {\n  display: inline !important;\n}\nsvg#sun.active #happyFace,\nsvg#sun:active #happyFace {\n  display: none !important;\n}\nsvg#sun.active #shines,\nsvg#sun:active #shines {\n  animation-duration: 3s;\n}\nsvg#cloud {\n  display: none;\n  width: 200px;\n  height: 200px;\n  overflow: visible;\n  position: absolute;\n  left: -100px;\n  top: 50px;\n  transform: translate(-50%, -50%);\n  animation: sun .7s linear infinite alternate;\n}\nsvg#cloud2 {\n  display: none;\n  width: 200px;\n  height: 200px;\n  overflow: visible;\n  position: absolute;\n  left: 260px;\n  top: 170px;\n  transform: translate(-50%, -50%);\n  animation: sun .7s linear infinite alternate;\n}\n#moon-wrapper {\n  position: absolute;\n  width: 200px;\n  height: 200px;\n  left: 50%;\n  top: 100%;\n  transform: translate(-50%, -50%);\n}\nsvg#moon {\n  width: 160px;\n  height: 160px;\n  overflow: visible;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  animation: sun .7s linear infinite alternate;\n}\nsvg#moon #hfEyeLeft,\nsvg#moon #hfEyeRight,\nsvg#moon #shfEyeLeft,\nsvg#moon #shfEyeRight {\n  transform-origin: center;\n  transform: rotateX(0deg) rotateY(0deg);\n  animation: eye .7s linear infinite alternate;\n}\nsvg#moon #hfMouth,\nsvg#moon #shfMouth {\n  transform-origin: center;\n  transform: scale(1);\n  animation: mouth .7s linear infinite alternate;\n}\nsvg#moon #glow {\n  transform-origin: center;\n  transform: scale(1);\n  animation: glow .7s linear infinite alternate;\n}\n#sun-wrapper {\n  position: absolute;\n  width: 200px;\n  height: 200px;\n  left: 50%;\n  top: 0%;\n  transform: translate(-50%, -50%);\n}\nsvg#sun {\n  width: 200px;\n  height: 200px;\n  overflow: visible;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  animation: sun .7s linear infinite alternate;\n}\nsvg#sun #hfEyeLeft,\nsvg#sun #hfEyeRight,\nsvg#sun #shfEyeLeft,\nsvg#sun #shfEyeRight {\n  transform-origin: center;\n  transform: rotateX(0deg) rotateY(0deg);\n  animation: eye .7s linear infinite alternate;\n}\nsvg#sun #shines {\n  transform-origin: center;\n  transform: rotateZ(0deg);\n  animation: shine 5s linear infinite;\n}\nsvg#sun #hfMouth,\nsvg#sun #shfMouth {\n  transform-origin: center;\n  transform: scale(1);\n  animation: mouth .7s linear infinite alternate;\n}\nsvg#sun #glow {\n  transform-origin: center;\n  transform: scale(1);\n  animation: glow .7s linear infinite alternate;\n}\n@keyframes shine {\n  0% {\n    transform: rotateZ(0deg);\n  }\n\n  100% {\n    transform: rotateZ(360deg);\n  }\n}\n@keyframes mouth {\n  0% {\n    transform: scale(1);\n  }\n\n  100% {\n    transform: scale(0.96);\n  }\n}\n@keyframes glow {\n  0% {\n    transform: scale(1);\n  }\n\n  100% {\n    transform: scale(1.05);\n  }\n}\n@keyframes eye {\n  0% {\n    transform: rotateX(0deg) rotateY(0deg);\n  }\n\n  100% {\n    transform: rotateX(20deg) rotateY(-5deg);\n  }\n}\n@keyframes sun {\n  0% {\n    transform: translate(-50%, -50%);\n  }\n\n  100% {\n    transform: translate(-50%, -52%);\n  }\n}\n"; (require("browserify-css").createStyle(css, { "href": "src/css/cosmosControl.css" }, { "insertAt": "bottom" })); module.exports = css;
+var css = ".cosmosControl {\n  touch-action: none;\n  position: absolute;\n  border: 5px dashed transparent;\n  bottom: 0;\n  border-radius: 50%;\n  left: 50%;\n  transform: translate(-50%,50%);\n  z-index: 1;\n  pointer-events: none;\n  opacity: 1;\n  transition: bottom 1s ease-in-out, \n                opacity 1s ease-in-out;\n}\n.cosmosControl.hide {\n  bottom: -100%;\n  opacity: 0;\n}\n.cosmosControl.active,\n.cosmosControl:active {\n  border: 5px dashed rgba(255,255,255,.5);\n}\nsvg,\n#reset {\n  touch-action: none;\n  box-sizing: border-box;\n  transition: padding .1s ease-in-out;\n  cursor: pointer;\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Safari */\n  -khtml-user-select: none;\n  /* Konqueror HTML */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                supported by Chrome and Opera */\n  pointer-events: all;\n}\nsvg.active,\nsvg:active {\n  padding: 10px;\n  cursor: pointer;\n  cursor: -webkit-grabbing;\n}\nsvg#moon #superHappyFace {\n  display: none !important;\n}\nsvg#moon.active #superHappyFace,\nsvg#moon:active #superHappyFace {\n  display: inline !important;\n}\nsvg#moon.active #happyFace,\nsvg#moon:active #happyFace {\n  display: none !important;\n}\nsvg#sun #superHappyFace {\n  display: none !important;\n}\nsvg#sun.active #superHappyFace,\nsvg#sun:active #superHappyFace {\n  display: inline !important;\n}\nsvg#sun.active #happyFace,\nsvg#sun:active #happyFace {\n  display: none !important;\n}\nsvg#sun.active #shines,\nsvg#sun:active #shines {\n  animation-duration: 3s;\n}\nsvg#cloud {\n  display: none;\n  width: 200px;\n  height: 200px;\n  overflow: visible;\n  position: absolute;\n  left: -100px;\n  top: 50px;\n  transform: translate(-50%, -50%);\n  animation: sun .7s linear infinite alternate;\n}\nsvg#cloud2 {\n  display: none;\n  width: 200px;\n  height: 200px;\n  overflow: visible;\n  position: absolute;\n  left: 260px;\n  top: 170px;\n  transform: translate(-50%, -50%);\n  animation: sun .7s linear infinite alternate;\n}\n#moon-wrapper {\n  position: absolute;\n  width: 200px;\n  height: 200px;\n  left: 50%;\n  top: 100%;\n  transform: translate(-50%, -50%);\n}\nsvg#moon {\n  width: 160px;\n  height: 160px;\n  overflow: visible;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  animation: sun .7s linear infinite alternate;\n}\nsvg#moon #hfEyeLeft,\nsvg#moon #hfEyeRight,\nsvg#moon #shfEyeLeft,\nsvg#moon #shfEyeRight {\n  transform-origin: center;\n  transform: rotateX(0deg) rotateY(0deg);\n  animation: eye .7s linear infinite alternate;\n}\nsvg#moon #hfMouth,\nsvg#moon #shfMouth {\n  transform-origin: center;\n  transform: scale(1);\n  animation: mouth .7s linear infinite alternate;\n}\nsvg#moon #glow {\n  transform-origin: center;\n  transform: scale(1);\n  animation: glow .7s linear infinite alternate;\n}\n#sun-wrapper {\n  position: absolute;\n  width: 200px;\n  height: 200px;\n  left: 50%;\n  top: 0%;\n  transform: translate(-50%, -50%);\n}\nsvg#sun {\n  width: 200px;\n  height: 200px;\n  overflow: visible;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  animation: sun .7s linear infinite alternate;\n}\nsvg#sun #hfEyeLeft,\nsvg#sun #hfEyeRight,\nsvg#sun #shfEyeLeft,\nsvg#sun #shfEyeRight {\n  transform-origin: center;\n  transform: rotateX(0deg) rotateY(0deg);\n  animation: eye .7s linear infinite alternate;\n}\nsvg#sun #shines {\n  transform-origin: center;\n  transform: rotateZ(0deg);\n  animation: shine 5s linear infinite;\n}\nsvg#sun #hfMouth,\nsvg#sun #shfMouth {\n  transform-origin: center;\n  transform: scale(1);\n  animation: mouth .7s linear infinite alternate;\n}\nsvg#sun #glow {\n  transform-origin: center;\n  transform: scale(1);\n  animation: glow .7s linear infinite alternate;\n}\n@keyframes shine {\n  0% {\n    transform: rotateZ(0deg);\n  }\n\n  100% {\n    transform: rotateZ(360deg);\n  }\n}\n@keyframes mouth {\n  0% {\n    transform: scale(1);\n  }\n\n  100% {\n    transform: scale(0.96);\n  }\n}\n@keyframes glow {\n  0% {\n    transform: scale(1);\n  }\n\n  100% {\n    transform: scale(1.05);\n  }\n}\n@keyframes eye {\n  0% {\n    transform: rotateX(0deg) rotateY(0deg);\n  }\n\n  100% {\n    transform: rotateX(20deg) rotateY(-5deg);\n  }\n}\n@keyframes sun {\n  0% {\n    transform: translate(-50%, -50%);\n  }\n\n  100% {\n    transform: translate(-50%, -52%);\n  }\n}\n#reset {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 80px;\n  height: 80px;\n  line-height: 53px;\n  background: rgba(255, 255, 255, 0.2);\n  border-radius: 50px;\n  text-align: center;\n  border: 1px solid rgba(255, 255, 255, 0.63);\n  color: white;\n  opacity: 1;\n  transition: opacity 0.5s ease-in-out;\n}\n#reset.hide {\n  opacity: 0;\n}\n"; (require("browserify-css").createStyle(css, { "href": "src/css/cosmosControl.css" }, { "insertAt": "bottom" })); module.exports = css;
 },{"browserify-css":1}],8:[function(require,module,exports){
 /******************************************************************************
  * backgroundSong.js
@@ -275,6 +275,7 @@ const CosmosControl = function (options){
         rotation_speed: 0,
         
         onUpdateDayCallbacks: [],
+        onResetClickCallbacks: [],
 
         createDom: (hours) => {
 
@@ -295,6 +296,12 @@ const CosmosControl = function (options){
             cosmosControl.$moon_wrapper.innerHTML = cosmosControl.moonSvg;
             cosmosControl.$cosmosControl.appendChild(cosmosControl.$moon_wrapper);
 
+            cosmosControl.$reset = document.createElement("div");
+            cosmosControl.$reset.id = "reset";
+            cosmosControl.$reset.innerHTML = "Reset";
+            cosmosControl.$reset.classList.add("hide");
+            cosmosControl.$cosmosControl.appendChild(cosmosControl.$reset);
+
             cosmosControl.updateDay(hours);
         
             cosmosControl.addEventListeners();
@@ -312,6 +319,23 @@ const CosmosControl = function (options){
             window.document.addEventListener('touchend', cosmosControl.touchendEventHandler)
             window.document.addEventListener('touchcancel', cosmosControl.touchendEventHandler)
             window.addEventListener("resize", cosmosControl.windowResizeEventHandler);
+
+            cosmosControl.$reset.addEventListener("click", cosmosControl.reset_click_event_handler);
+        },
+
+        reset_click_event_handler: function () {
+            cosmosControl.hide_reset();
+            cosmosControl.rotation_speed = 0;
+            cosmosControl.emitResetClick();
+            cosmosControl.$reset.blur()
+        },
+
+        show_reset: function(){
+            cosmosControl.$reset.classList.remove("hide");
+        },
+
+        hide_reset: function(){
+            cosmosControl.$reset.classList.add("hide");
         },
 
         windowResizeEventHandler: function () {
@@ -377,6 +401,8 @@ const CosmosControl = function (options){
             cosmosControl.start_current_rotation = cosmosControl.current_rotation;
             
             cosmosControl.rotation_speed = 0;
+
+            cosmosControl.show_reset();
         },
         touchMove: function (clientX, clientY) {
             var boundingClientRect = options.domElement.getBoundingClientRect();
@@ -448,7 +474,7 @@ const CosmosControl = function (options){
 
         /* Update Handler */
 
-        updateDay: function(hour){
+        updateDay: function(hour, localTimeHour){
            
             if (!cosmosControl.isTouching) {
 
@@ -476,7 +502,14 @@ const CosmosControl = function (options){
                     cosmosControl.current_rotation = cosmosControl.convertHourToAngle(hour);
                 }
             }
-
+            /*
+            Calculate position of current time:
+            var localTimeHour_rotation = cosmosControl.convertHourToAngle(localTimeHour);
+            localTimeHour_rotation_diff = (cosmosControl.current_rotation - localTimeHour_rotation)%360;
+            var localTimeHour_rotation_x = cosmosControl.$cosmosControl.offsetWidth/2 * Math.cos((cosmosControl.current_rotation-localTimeHour_rotation_diff)*Math.PI/180);
+            var localTimeHour_rotation_y = cosmosControl.$cosmosControl.offsetWidth/2 * Math.sin((cosmosControl.current_rotation-localTimeHour_rotation_diff)*Math.PI/180);
+            */
+            
             cosmosControl.updateAngle();
         },
         updateAngle: function () {
@@ -492,6 +525,8 @@ const CosmosControl = function (options){
             } else {
                 cosmosControl.$moon_wrapper.style.transform = "translate(-50%,-50%) rotateZ(" + -cosmosControl.current_rotation + "deg)"; 
             }
+
+            cosmosControl.$reset.style.transform = "translate(-50%,-50%) rotateZ(" + -cosmosControl.current_rotation + "deg)"; 
         },
 
         convertAngleToHour: function (angle) {
@@ -514,6 +549,23 @@ const CosmosControl = function (options){
         emitUpdateDay:function(){
             var hour = cosmosControl.convertAngleToHour(cosmosControl.current_rotation);
             cosmosControl.onUpdateDayCallbacks.forEach(callback => callback(hour));
+        },
+
+        onResetClick: function (callback) {
+            cosmosControl.onResetClickCallbacks.push(callback);
+        },
+        emitResetClick: function () {
+            cosmosControl.onResetClickCallbacks.forEach(callback => callback());
+        },
+
+        /* Show/Hide */
+
+        hide: () => {
+            cosmosControl.$cosmosControl.classList.add('hide')
+        },
+
+        show: () => {
+            cosmosControl.$cosmosControl.classList.remove('hide')
         }
     }
 
@@ -627,7 +679,7 @@ const DayTime = function (options){
         document.head.appendChild(style);
       }
 
-      if (options.showCosmosControl) {
+      if (options.enableCosmosControl) {
         dayTime.addCosmosControl(dayTime.getHours());
       }
     },
@@ -656,9 +708,23 @@ const DayTime = function (options){
       options.domElement.appendChild(child)
     },
 
-    setHours: hour => dayTime.currentSetHour = Number.isInteger(hour) ? Math.min(23, Math.max(0, Math.floor(hour))) : undefined,
-    setToLocalTime: () => dayTime.currentSetHour = undefined,
-    getHours:   () => typeof dayTime.currentSetHour === 'undefined' ? new Date().getHours() : dayTime.currentSetHour,
+    setHours: function (hour) {
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.show_reset();
+      }
+      dayTime.currentSetHour = Number.isInteger(hour) ? Math.min(23, Math.max(0, Math.floor(hour))) : undefined;
+    },
+
+    setToLocalTime: function () {
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.hide_reset();
+      }
+      dayTime.currentSetHour = undefined
+    },
+    
+    getHours:         () => typeof dayTime.currentSetHour === 'undefined' ? dayTime.getLocalTimeHour() : dayTime.currentSetHour,
+    
+    getLocalTimeHour: () => new Date().getHours(),
 
     getDayTime: function () {
       var hour = dayTime.getHours();
@@ -672,7 +738,10 @@ const DayTime = function (options){
       dayTime.cosmosControl = CosmosControl(options);
       dayTime.cosmosControl.createDom();
       dayTime.cosmosControl.onUpdateDay(hour => dayTime.currentSetHour = hour);
+      dayTime.cosmosControl.onResetClick(() => { dayTime.setToLocalTime(); });
     },
+
+
 
     /**
      *  Entity update method to change daytime status.
@@ -683,7 +752,7 @@ const DayTime = function (options){
       const hour = dayTime.getHours()
       
       if (dayTime.cosmosControl) {
-        dayTime.cosmosControl.updateDay(hour);
+        dayTime.cosmosControl.updateDay(hour, dayTime.getLocalTimeHour());
       }
 
       if (dayTime.lastSetHour != hour) {
@@ -745,6 +814,18 @@ const DayTime = function (options){
       style.id = "rm_atmo_dynamic_styles";
       style.appendChild(document.createTextNode(css));
       document.head.appendChild(style);
+    },
+
+    hideCosmosControl: () => {
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.hide()
+      } 
+    },
+
+    showCosmosControl: () => {
+      if (dayTime.cosmosControl) {
+        dayTime.cosmosControl.show()
+      } 
     }
   }
 
@@ -1154,7 +1235,7 @@ module.exports =  UserTap
         domElement: document.body,
         songSrc: undefined,
         muted: false,
-        showCosmosControl: false,
+        enableCosmosControl: false,
         renderCss: false,
         colors: {
           day: '#00ADFF',
@@ -1408,6 +1489,14 @@ module.exports =  UserTap
     
         setToLocalTime: () => {
           rM_AtMo.dayTime.setToLocalTime()
+        },
+        
+        hideCosmosControl: () => {
+          rM_AtMo.dayTime.hideCosmosControl()
+        },
+
+        showCosmosControl: () => {
+          rM_AtMo.dayTime.showCosmosControl()
         }
       }
     }
