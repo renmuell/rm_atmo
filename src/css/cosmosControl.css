@@ -263,6 +263,7 @@ svg#sun #glow {
     color: white;
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
+    font-family: Arial;
 }
 
 #reset.hide {

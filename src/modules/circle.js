@@ -21,18 +21,19 @@ const Circle = function (x, y){
     radius      : 100 * Math.random(), 
     lineWidth   : 0,
     lastLineUpdate: 0,
+    type : 'Circle',
 
     /* stroke start and end angle */
     startAngle  : Math.random() * (2 * Math.PI), 
     endAngle    : ((Math.random() * (2 * Math.PI)) + Math.random() * 10) % (2 * Math.PI),
     
     /* the rate of change, each step, in ms */
-    startAngleChange : Math.random()/2000,
-    endAngleChange   : (Math.random()/2000) * 2,
+    startAngleChange : Math.random()/5000,
+    endAngleChange   : (Math.random()/5000) * 2,
 
     death       : false,
     // in ms
-    lifeTime    : 50000 * Math.random(),
+    lifeTime    : 30000 * Math.random(),
 
     /* how long alive */
     timeAlive:0,
@@ -71,8 +72,8 @@ const Circle = function (x, y){
         circle.endAngle)
       
       if (circle.lastLineUpdate == 0 || circle.lastLineUpdate > 100) {
-        circle.lineWidth = Math.max(1, circle.timeAlive / 10000) + ((Math.random() - 0.5) * (circle.timeAlive / 1000))
-        circle.lastLineUpdate = 0
+        circle.lineWidth = Math.max(1, circle.timeAlive / 10000) + ((Math.random() - 0.5) * (circle.timeAlive / 10000))
+        circle.lastLineUpdate = 0 
       }
       circle.lastLineUpdate += data.stepTimeElapsed
 

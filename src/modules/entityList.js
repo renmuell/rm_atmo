@@ -97,6 +97,18 @@ const EntityList = function  () {
       })
 
       entityList.entities = tmp
+    },
+
+    count: (type) => {
+      var num = 0;
+
+      entityList.entities.forEach(entity => {
+        if (!entity.death && entity.type == type){
+          num++
+        }
+      })
+
+      return num;
     }
   }
 

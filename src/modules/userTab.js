@@ -53,7 +53,8 @@ const UserTap = function  (
     death       : false,
     lifeTime    : 1000, // in ms
     timeAlive   : 0,
-
+    type        : 'UserTap',
+    
     /**
      *  Initialize userTab instance
      *

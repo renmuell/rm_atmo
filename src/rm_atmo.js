@@ -165,7 +165,10 @@
             rM_AtMo.engine.clear();
             
             if (rM_AtMo.frame % 100 == 0 || (rM_AtMo.frame < 3)) {
-              rM_AtMo.entityList.add(Circle(Math.random() * width, Math.random() * height))
+              // not more than 6 circles
+              if (rM_AtMo.entityList.count("Circle") <= 5) {
+                rM_AtMo.entityList.add(Circle(Math.random() * width, Math.random() * height))
+              }
             }
             
             rM_AtMo.entityList.update(stepTimeElapsed) 
