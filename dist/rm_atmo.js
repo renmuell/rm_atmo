@@ -282,6 +282,10 @@ const CosmosControl = function (options){
             cosmosControl.$cosmosControl = document.createElement("div");
             cosmosControl.$cosmosControl.classList = "cosmosControl";
 
+            if (!options.showCosmosControl) {
+                cosmosControl.$cosmosControl.classList.add("hide");
+            }
+
             cosmosControl.windowResizeEventHandler();
 
             options.domElement.appendChild(cosmosControl.$cosmosControl);
@@ -1236,6 +1240,7 @@ module.exports =  UserTap
         songSrc: undefined,
         muted: false,
         enableCosmosControl: false,
+        showCosmosControl: true,
         renderCss: false,
         colors: {
           day: '#00ADFF',

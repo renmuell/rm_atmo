@@ -37,6 +37,10 @@ const CosmosControl = function (options){
             cosmosControl.$cosmosControl = document.createElement("div");
             cosmosControl.$cosmosControl.classList = "cosmosControl";
 
+            if (!options.showCosmosControl) {
+                cosmosControl.$cosmosControl.classList.add("hide");
+            }
+
             cosmosControl.windowResizeEventHandler();
 
             options.domElement.appendChild(cosmosControl.$cosmosControl);

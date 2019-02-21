@@ -52,6 +52,7 @@
         songSrc: undefined,
         muted: false,
         enableCosmosControl: false,
+        showCosmosControl: true,
         renderCss: false,
         colors: {
           day: '#00ADFF',
