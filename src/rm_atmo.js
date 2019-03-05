@@ -53,6 +53,7 @@
         muted: false,
         enableCosmosControl: false,
         showCosmosControl: true,
+        resetTextCosmosControl: 'Reset',
         renderCss: false,
         colors: {
           day: '#00ADFF',

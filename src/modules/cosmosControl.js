@@ -57,7 +57,7 @@ const CosmosControl = function (options){
 
             cosmosControl.$reset = document.createElement("div");
             cosmosControl.$reset.id = "reset";
-            cosmosControl.$reset.innerHTML = "Reset";
+            cosmosControl.$reset.innerHTML = options.resetTextCosmosControl;
             cosmosControl.$reset.classList.add("hide");
             cosmosControl.$cosmosControl.appendChild(cosmosControl.$reset);
 
